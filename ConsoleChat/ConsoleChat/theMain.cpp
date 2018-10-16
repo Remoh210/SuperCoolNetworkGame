@@ -20,27 +20,59 @@ void SwitchRoom(UserInfo& cData);
 
 int main() {
 	UserInfo User;
-
-	std::cout << "Connect to the loacal server? \n";
-	std::cout << "Type \"y\" or \"n\": ";
+	std::cout << " \n\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+::::::::::::::::##############                              :::::::::::::::::::" << std::endl << "\
+############################  ##############################  :::::::::::::::::" << std::endl << "\
+#########################  ######???????????????????????######  :::::::::::::::" << std::endl << "\
+=========================  ####??????????()????()?????????####  :::::::::::::::" << std::endl << "\
+=========================  ##????()??????????????    ()?????##  ::::    :::::::" << std::endl << "\
+------------=============  ##??????????????????  ;;;;  ?????##  ::  ;;;;  :::::" << std::endl << "\
+-------------------------  ##??????????()??????  ;;;;;;?????##    ;;;;;;  :::::" << std::endl << "\
+-------------------------  ##??????????????????  ;;;;;;         ;;;;;;;;  :::::" << std::endl << "\
+++++++++++++-------------  ##??????????????????  ;;;;;;;;;;;;;;;;;;;;;;;  :::::" << std::endl << "\
++++++++++++++++++++++++++  ##????????????()??  ;;;;;;;;;;;;;;;;;;;;;;;;;;;  :::" << std::endl << "\
++++++++++++++++++    ;;;;  ##??()????????????  ;;;;;;@@  ;;;;;;;;@@  ;;;;;  :::" << std::endl << "\
+~~~~~~~~~~~~~++++;;;;;;;;  ##????????????????  ;;;;;;    ;;;  ;;;    ;;;;;  :::" << std::endl << "\
+~~~~~~~~~~~~~~~  ;;  ~~~~  ####??????()??????  ;;[];;;;;;;;;;;;;;;;;;;;;[]  :::" << std::endl << "\
+$$$$$$$$$$$$$~~~~  ~~~~~~  ######?????????????  ;;;;;;              ;;;;  :::::" << std::endl << "\
+$$$$$$$$$$$$$$$$$$$$$$$$$    ###################  ;;;;;;;;;;;;;;;;;;;;  :::::::" << std::endl << "\
+$$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::" << std::endl << "\
+:::::::::::::$$$$$$$$$$  ;;;;  ::  ;;  ::::::::::::  ;;  ::  ;;;;  ::::::::::::" << std::endl << "\
+:::::::::::::::::::::::      ::::::    :::::::::::::     ::::      ::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NN::::NN::YY::::YY:::AAAAAA:::NN::::NN:::!!::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NNNN::NN::YY::::YY::AA::::AA::NNNN::NN:::!!::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NNNN::NN::YY::::YY::AA::::AA::NNNN::NN:::!!::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NN::NNNN::::YYYY::::AAAAAAAA::NN::NNNN:::!!::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NN::NNNN:::::YY:::::AA::::AA::NN::NNNN:::::::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NN::::NN:::::YY:::::AA::::AA::NN::::NN:::!!::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+::::::::::::::::::::::::YOU:HAVE:DONE:THE:NYAN:::::::::::::::::::::::::::::::::" << std::endl;
+	std::cout << "Hello there, stranger. Here it is the console. The console which will demonstrate you the wonderful networking possibilities of a basic command-line interface\n";
+	std::cout << "Before then, should the console connect you to the localhost network. It is likely that you're not running a production demo of this thing, so console assumes that the localhost would be the right address to find the server.\n";
+	std::cout << "Type \"y\" or \"n\"";
 	std::cin >> Answer;
 
-
 	if (Answer == 'y' || Answer == 'Y') {
-		std::cout << "Connecting to the localhost \n";
+		std::cout << "Okay then, the console was right, it is just for the local demonstration. \nServer 127.0.0.1 will see this client application in just a moment... \n";
 		User.ServerAdress = SERVER_ADDRESS;
 	}
 	else if (Answer == 'n' || Answer == 'N') {
 		char serverAdress[ARRAY_SIZE];
-		std::cout << "Specify the adress: \n";
+		std::cout << "No? Who said running this in production was a good idea? Specify the IP address to connect in this case?\n";
 		std::cin >> serverAdress;
 		User.ServerAdress = serverAdress;
 	}
 	else {
-		std::cout << "Incorrect answer\n";
+		std::cout << "The console awaits the correct answer. Don't mess with it";
 	};
 
-	std::cout << "Enter Your Name: \n";
+	std::cout << "Console needs to know your first name. It is important: \n";
 	char FirstName[ARRAY_SIZE];
 	std::cin >> FirstName;
 	User.Name = FirstName;
@@ -56,12 +88,12 @@ int main() {
 
 
 	if (Conn.isAlive) {
-		cout << "connected!\n"
-			<< "-j -l Join and Leave";
+		cout << "You appear to be connected!\n"
+			<< "Typing -j means that you're gonna join to the room number ... (which you also have to specify). \n-l means LEAVE!\n";
 		system("pause");
 	}
 	else {
-		cout << "Server is down.\n";
+		cout << "Looks like the server is down, no luck this time.\n";
 		Sleep(6000);
 	}
 
@@ -80,13 +112,13 @@ int main() {
 			ChatBuffer += Recieve_Message;
 
 			cout << ChatBuffer;
-			cout << "\n";
-			cout << "-j means join, -l means leave\n";
-			cout << "Use the Enter key to Update\n";
-			cout << "Connected to ";
+			cout << ".-\"-._,-'_`-._,-'_`-._,-'_`-._,-'_`-,_,-'_`-,_,-'_`-,_,-'_`-,_,-'_`-,.\n";
+			cout << "The console reminds you! : Typing -j means that you're gonna join to the room number ... (which you also have to specify). \n-l means LEAVE!\n";
+			cout << "If the chat isn't updated, use the Enter key, my dear friend!\n";
+			cout << "The connection protocol tells about being connected to the next rooms: ";
 			for (int i = 0; i < ConnRooms.size(); i++) cout << ConnRooms[i] << " ";
 			cout << '\n';
-			cout << "\n";
+			cout << ".-\"-._,-'_`-._,-'_`-._,-'_`-._,-'_`-,_,-'_`-,_,-'_`-,_,-'_`-,_,-'_`-,.\n";
 		}
 
 		getline(cin, Send_Message);
