@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _BufferThingy_HG
-#define _BufferThingy_HG
+#ifndef _Buffer_HG
+#define _Buffer_HG
 
 #include <string>
 
