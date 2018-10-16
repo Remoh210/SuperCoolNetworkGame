@@ -105,7 +105,6 @@ int main(void)
 	{
 		printf(":: Called Function :: ioctlsocket() | INFO :: OK!\n");
 	}
-	//error check finished..
 
 
 	while (true) 
@@ -115,9 +114,141 @@ int main(void)
 
 		FD_SET(listenSocket, &ReadSet);
 
-		
+		for (i = 0; i < TotalSockets; i++)
+		{
+			if (SocketArray[i]->GotNewData)
+			{
+				FD_SET(SocketArray[i]->Socket, &WriteSet);
+			}
+			else
+			{
+				FD_SET(SocketArray[i]->Socket, &ReadSet);
+			}
+		}
+
+		if ((Total = select(0, &ReadSet, &WriteSet, NULL, NULL)) == SOCKET_ERROR)
+		{
+			printf(":: Called Function :: select() | INFO :: Error: %d\n", WSAGetLastError());
+			return 1;
+		}
+		else
+		{
+			printf(":: Called Function :: select() | INFO :: OK!\n");
+		}
+
+		if (FD_ISSET(listenSocket, &ReadSet))
+		{
+			Total--;
+			if ((clientSocket = accept(listenSocket, NULL, NULL)) != INVALID_SOCKET)
+			{
+				NonBlock = 1;
+				if (ioctlsocket(clientSocket, FIONBIO, &NonBlock) == SOCKET_ERROR)
+				{
+					printf(":: Called Function :: ioctlsocket(FIONBIO | INFO ::) Error: %d\n", WSAGetLastError());
+					return 1;
+				}
+				else
+				{
+					printf(":: Called Function :: ioctlsocket(FIONBIO | INFO ::) OK!\n");
+				}
+
+				if (CreateSocketInformation(clientSocket) == FALSE)
+				{
+					printf(":: Called Function :: CreateSocketInformation(clientSocket | INFO ::) failed!\n");
+					return 1;
+				}
+				else
+				{
+					printf(":: Called Function :: CreateSocketInformation() | INFO :: OK!\n");
+				}
+			}
+			else
+			{
+				if (WSAGetLastError() != WSAEWOULDBLOCK)
+				{
+					printf(":: Called Function :: accept() | INFO :: Error: %d\n", WSAGetLastError());
+					return 1;
+				}
+				else
+				{
+					printf(":: Called Function :: accept() | INFO :: OK!\n");
+				}
+			}
+		}
+
+		for (i = 0; Total > 0 && i < TotalSockets; i++)
+		{
+			LPSOCKET_INFORMATION SocketInfo = SocketArray[i];
+
+			if (FD_ISSET(SocketInfo->Socket, &ReadSet))
+			{
+				Total--;
+
+				SocketInfo->WsaBuffer.buf = SocketInfo->Buffer;
+				SocketInfo->WsaBuffer.len = BUFFER_LENGTH;
+
+				Flags = 0;
+				if (WSARecv(SocketInfo->Socket, &(SocketInfo->WsaBuffer), 1, &RecvBytes, &Flags, NULL, NULL) == SOCKET_ERROR)
+				{
+					if (WSAGetLastError() != WSAEWOULDBLOCK) 
+					{
+						printf("WSARecv() Error: %d\n", WSAGetLastError());
+						FreeSocketInformation(i);
+					}
+					else 
+					{
+						printf("WSARecv() OK!\n");
+					}
+					continue;
+				}
+				else
+				{
+					SocketInfo->BytesRECV = RecvBytes;
+
+					if (RecvBytes == 0) 
+					{
+						FreeSocketInformation(i);
+						continue;
+					}
+					else
+					{
+						ReadSocket(SocketArray[i]);
+					}
+				}
+			}
+
+			if (FD_ISSET(SocketInfo->Socket, &WriteSet))
+			{
+				Total--;
+
+				if (SocketInfo->GotNewData)
+				{
+					if (WSASend(SocketInfo->Socket, &(SocketInfo->WsaBuffer), 1, &SendBytes, 0, NULL, NULL) == SOCKET_ERROR)
+					{
+						if (WSAGetLastError() != WSAEWOULDBLOCK) 
+						{
+							printf("WSASend() failed with error %d\n", WSAGetLastError());
+							FreeSocketInformation(i);
+						}
+						else
+						{
+							printf("WSASend() OK!\n");
+						}
+						continue;
+					}
+					else
+					{
+						SocketInfo->BytesSEND += SendBytes;
+
+						if (SocketInfo->BytesSEND == SocketInfo->BytesRECV)
+						{
+							SocketInfo->BytesSEND = 0;
+							SocketInfo->BytesRECV = 0;
+						}
+					}
+				}
+				SocketInfo->GotNewData = 0;
+			}
+		}
 	}
-
-
-
 }
