@@ -7,7 +7,7 @@
 #include <ws2tcpip.h>
 #include <vector>
 
-//#include "BufferThing.h"
+#include "Buffer.h"
 
 // Need to link with Ws2_32.lib
 #pragma comment(lib, "Ws2_32.lib")
@@ -59,7 +59,7 @@ int main(void)
 	iRes = WSAStartup(MAKEWORD(2, 2), &winsockData);
 	if (iRes != 0)
 	{
-		printf("WSAStartip Fail: %d\n", iRes);
+		printf("WSAStart Fail: %d\n", iRes);
 		return 1;
 	}
 
@@ -67,6 +67,57 @@ int main(void)
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 	hints.ai_flags = AI_PASSIVE;
+
+	listenSocket = socket(AF_INET, SOCK_STREAM, 0);
+	if (listenSocket == INVALID_SOCKET) 
+	{
+		printf(":: Called Function :: socket() | INFO :: Error: %d\n", WSAGetLastError());
+		WSACleanup();
+		return 1;
+	}
+
+	getaddrinfo(NULL, PORT_NUMBER, &hints, &result);
+	iRes = bind(listenSocket, result->ai_addr, (int)result->ai_addrlen);
+	if (iRes == SOCKET_ERROR)
+	{
+		printf(":: Called Function :: bind() | INFO :: failed with error: %d\n", WSAGetLastError());
+		freeaddrinfo(result);
+		closesocket(listenSocket);
+		WSACleanup();
+		return 1;
+	}
+
+	if (listen(listenSocket, SOMAXCONN))
+	{
+		printf(":: Called Function :: listen() | INFO :: Error: %d\n", WSAGetLastError());
+		closesocket(listenSocket);
+		WSACleanup();
+		return 1;
+	}
+	
+	NonBlock = 1;
+	if (ioctlsocket(listenSocket, FIONBIO, &NonBlock) == SOCKET_ERROR)
+	{
+		printf(":: Called Function :: ioctlsocket() | INFO :: Error: %d\n", WSAGetLastError());
+		return 1;
+	}
+	else
+	{
+		printf(":: Called Function :: ioctlsocket() | INFO :: OK!\n");
+	}
+	//error check finished..
+
+
+	while (true) 
+	{
+		FD_ZERO(&ReadSet);
+		FD_ZERO(&WriteSet);
+
+		FD_SET(listenSocket, &ReadSet);
+
+		
+	}
+
 
 
 }
