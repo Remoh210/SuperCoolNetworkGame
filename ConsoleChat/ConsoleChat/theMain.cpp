@@ -55,7 +55,7 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 ::::::::::::::::::::::::YOU:HAVE:DONE:THE:NYAN:::::::::::::::::::::::::::::::::" << std::endl;
 	std::cout << "Hello there, stranger. Here it is the console. The console which will demonstrate you the wonderful networking possibilities of a basic command-line interface\n";
 	std::cout << "Before then, should the console connect you to the localhost network. It is likely that you're not running a production demo of this thing, so console assumes that the localhost would be the right address to find the server.\n";
-	std::cout << "Type \"y\" or \"n\"";
+	std::cout << "Type \"y\" or \"n\": ";
 	std::cin >> Answer;
 
 	if (Answer == 'y' || Answer == 'Y') {
@@ -90,11 +90,11 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 	if (Conn.isAlive) {
 		cout << "You appear to be connected!\n"
 			<< "Typing -j means that you're gonna join to the room number ... (which you also have to specify). \n-l means LEAVE!\n";
-		system("pause");
+		Sleep(8000);
 	}
 	else {
 		cout << "Looks like the server is down, no luck this time.\n";
-		Sleep(6000);
+		Sleep(8000);
 	}
 
 
