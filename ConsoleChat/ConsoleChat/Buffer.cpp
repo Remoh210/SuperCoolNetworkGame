@@ -92,3 +92,20 @@ void Buffer::WriteInt16LE(short value) {
 
 	this->mWriteIndex += 2;
 }
+
+void Buffer::WriteChar(unsigned int index, char value) {
+	// Is large enough?
+	if (index == this->mBuffer.size()) this->mBuffer.resize(index + MAX_GROW);
+
+	this->mBuffer[index] = value;
+}
+
+void Buffer::WriteChar(char value) {
+	// Is large enough?
+	if (this->mWriteIndex == this->mBuffer.size())
+		this->mBuffer.resize(this->mWriteIndex + MAX_GROW);
+
+	this->mBuffer[this->mWriteIndex] = value;
+
+	this->mWriteIndex += 1;
+}
