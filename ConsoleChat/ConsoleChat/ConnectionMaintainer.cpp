@@ -155,3 +155,68 @@ void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msg
 		connBuff->clearBuffer();
 	}
 }
+
+string ConnectionMaintainer::getMessages() {
+	// Setting time interval
+
+	timeval* mTime = new timeval[1];
+	mTime->tv_sec = 1;
+	mTime->tv_usec = 0;
+
+	// Add socket to fs_set
+	fd_set* listOfSockets = new fd_set[1];
+	listOfSockets->fd_count = 1;
+	listOfSockets->fd_array[0] = ConnectionSocket;
+
+	// Select blcok
+	if (select(0, listOfSockets, NULL, NULL, mTime) > 0) {
+		// Clear the buffer
+		ZeroMemory(recvbuf, recvbuflen);
+
+		IResult = recv(ConnectionSocket, recvbuf, recvbuflen, 0);
+		if (IResult == SOCKET_ERROR) {
+			closesocket(ConnectionSocket);
+			WSACleanup();
+			return "recv failed: " + WSAGetLastError() + '\n';
+		}
+
+		Buffer buff(recvbuflen);
+		buff.setBuffer(recvbuf, recvbuflen);
+		int packetLength = 0;
+		int bytesInBuffer = recvbuflen;
+		static string controlStr;
+		string retStr;
+
+		if (controlStr != "") retStr = controlStr;
+
+		while (bytesInBuffer != 0) {
+			if (bytesInBuffer < 4 && !packetLength) {
+				// incomplete buffer
+				controlStr.push_back(buff.ReadChar());
+				bytesInBuffer--;
+			}
+			else {
+				// data for the prefix length
+				packetLength = buff.ReadInt32LE();
+
+				// Read
+				if (packetLength <= bytesInBuffer && packetLength != 0) {
+					for (int i = 0; i < packetLength - 4; i++) {
+						// Complete the buffer
+						retStr.push_back(buff.ReadChar());
+					}
+					retStr.push_back('\n');
+					bytesInBuffer -= packetLength;
+				}
+				else if (packetLength == 0)
+					break;
+				bytesInBuffer--;
+			}
+		}
+
+		return retStr;
+	}
+
+	// Return an empty string
+	return "";
+}
