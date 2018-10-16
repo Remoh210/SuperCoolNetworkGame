@@ -70,3 +70,88 @@ void ConnectionMaintainer::closeConnection() {
 	closesocket(ConnectionSocket);
 	WSACleanup();
 }
+
+void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msgID,
+	string message) {
+	int packetLenght = 0;
+
+	switch (msgID) {
+	case MSG_ID_JOIN_ROOM: {  // Block it for local variables
+
+	  // Name lenght:
+		short userNameLenght = strlen(info.Name);
+
+		// Room number lenght:
+		short roomNumberNameLenght = strlen(info.Room);
+
+		packetLenght = sizeof(int) + sizeof(char) + sizeof(short) +
+			roomNumberNameLenght + sizeof(short) + userNameLenght;
+
+		// Writing
+		connBuff->WriteInt32LE(packetLenght);
+		connBuff->WriteChar(MSG_ID_JOIN_ROOM);
+
+		connBuff->WriteInt16LE(roomNumberNameLenght);
+		for (int i = 0; i < roomNumberNameLenght; i++)
+			connBuff->WriteChar(info.Room[i]);
+
+		connBuff->WriteInt16LE(userNameLenght);
+		for (int i = 0; i < userNameLenght; i++)
+			connBuff->WriteChar(info.Name[i]);
+
+	}
+
+						   break;
+
+	case MSG_ID_LEAVE_ROOM: {
+		// Room number lenght:
+		short roomNumberNameLenght = strlen(info.Room);
+
+		packetLenght =
+			sizeof(int) + sizeof(char) + sizeof(short) + roomNumberNameLenght;
+
+		// Writing
+		connBuff->WriteInt32LE(packetLenght);
+		connBuff->WriteChar(MSG_ID_LEAVE_ROOM);
+
+		connBuff->WriteInt16LE(roomNumberNameLenght);
+		for (int i = 0; i < roomNumberNameLenght; i++)
+			connBuff->WriteChar(info.Room[i]);
+
+	}
+
+							break;
+
+	case MSG_ID_LEAVE_THE_MESSAGE: {
+		// Message lenght
+		short msgLenght = message.size();
+
+		packetLenght = sizeof(int) + sizeof(char) + sizeof(short) + msgLenght;
+
+		// Writing
+		connBuff->WriteInt32LE(packetLenght);
+		connBuff->WriteChar(MSG_ID_LEAVE_THE_MESSAGE);
+
+		connBuff->WriteInt16LE(msgLenght);
+		for (int i = 0; i < msgLenght; i++) connBuff->WriteChar(message.at(i));
+
+	}
+
+								   break;
+
+	default:
+		break;
+	}
+
+	// Send Messege
+	IResult = send(ConnectionSocket, connBuff->getBuffer(), packetLenght, 0);
+	if (IResult == SOCKET_ERROR) {
+		printf("Socket() Error: %d\n", IResult);
+		closesocket(ConnectionSocket);
+		WSACleanup();
+		return;
+	}
+	else {
+		connBuff->clearBuffer();
+	}
+}
