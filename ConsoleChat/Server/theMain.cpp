@@ -252,3 +252,225 @@ int main(void)
 		}
 	}
 }
+
+BOOL CreateSocketInformation(SOCKET s)
+{
+	LPSOCKET_INFORMATION SI;
+	printf("SOCKET # %d\n :: Accepted", s);
+
+	if ((SI = (LPSOCKET_INFORMATION)GlobalAlloc(GPTR, sizeof(SOCKET_INFORMATION))) == NULL) 
+	{
+		printf(":: Called Function :: GlobalAlloc() | INFO :: Erro %d\n", GetLastError());
+		return FALSE;
+	}
+	else
+	{
+		printf(":: Called Function :: GlobalAlloc() | INFO :: for SOCKET_INFORMATION is OK!\n");
+	}
+
+	SI->Socket = s;
+	SI->BytesSEND = 0;
+	SI->BytesRECV = 0;
+
+	SocketArray[TotalSockets] = SI;
+	TotalSockets++;
+	return (TRUE);
+}
+
+void FreeSocketInformation(DWORD Index) 
+{
+	LPSOCKET_INFORMATION SI = SocketArray[Index];
+	DWORD i;
+
+	closesocket(SI->Socket);
+	printf("Closing socket number %d\n", SI->Socket);
+	GlobalFree(SI);
+
+	for (i = Index; i < TotalSockets; i++)
+	{
+		SocketArray[i] = SocketArray[i + 1];
+	}
+
+	TotalSockets--;
+}
+
+void ReadSocket(LPSOCKET_INFORMATION sa)
+{
+	bool isMessageIncomplete = 1;
+	int currMsgLength = 0;
+	std::string currBuffer;
+
+	for (int i = 0; i <= sa->BytesRECV; i++)
+	{
+		if (isMessageIncomplete)
+		{
+			if (!currMsgLength) 
+			{
+				currBuffer.push_back(sa->WsaBuffer.buf[i]);
+
+				if (currBuffer.size() == 4)
+				{
+					Buffer buff(4);
+					for (int index2 = 0; index2 < 4; index2++)
+					{
+						buff.WriteChar(currBuffer.at(index2));
+					}
+					currMsgLength = buff.ReadInt32LE();
+				}
+			}
+			else
+			{
+				if (currMsgLength != currBuffer.size())
+				{
+					currBuffer.push_back(sa->WsaBuffer.buf[i]);
+				}
+				else
+				{
+					TreatMessage(sa, currBuffer);
+					currBuffer = "";
+					!isMessageIncomplete;
+					!currMsgLength;
+				}
+			}
+		}
+		else
+		{
+			currMsgLength = 0;
+			!isMessageIncomplete;
+			currBuffer.push_back(sa->WsaBuffer.buf[i]);
+		}
+	}
+}
+
+void sendMsg(LPSOCKET_INFORMATION sa, std::string msg, std::string userName)
+{
+	std::string formatedMsg = userName + "->" + msg;
+
+	int packetLength = sizeof(INT32) + formatedMsg.size();
+
+	Buffer buff(packetLength);
+	buff.WriteInt32LE(packetLength);
+
+	for (int index2 = 0; index2 < formatedMsg.size(); index2++)
+	{
+		buff.WriteChar(formatedMsg.at(index2));
+	}
+
+	buff.WriteChar('\0');
+
+	sa->WsaBuffer.buf = buff.getBuffer();
+	sa->WsaBuffer.len = packetLength;
+	sa->GotNewData = 1;
+}
+
+void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
+{
+	Buffer buff(msg.size());
+
+	for (int index2 = 0; index2 < msg.size(); index2++)
+	{
+		buff.WriteChar(msg.at(index2));
+	}
+
+	int packetLenght = buff.ReadInt32LE();
+
+	char msgID = buff.ReadChar();
+
+	switch (msgID)
+	{
+		case 1:
+		{
+			short roomNameLenght = buff.ReadInt16LE();
+			std::string roomName;
+
+			for (short index3 = 0; index3 < roomNameLenght; index3++)
+			{
+				roomName.push_back(buff.ReadChar());
+			}
+
+			sa->rooms.push_back(roomName);
+			short userNameLenght = buff.ReadInt16LE();
+			std::string userName;
+
+			for (short index3 = 0; index3 < userNameLenght; index3++)
+			{
+				userName.push_back(buff.ReadChar());
+			}
+			sa->UserName = userName;
+
+			for (int indA = 0; indA < sa->rooms.size(); indA++)
+			{
+				for (int indB = 0; indB < TotalSockets; indB++)
+				{
+					for (int indC = 0; indC < SocketArray[indB]->rooms.size(); indC++)
+					{
+						if (roomName == SocketArray[indB]->rooms.at(indC) && SocketArray[indB]->rooms.at(indC) != "")
+						{
+							sendMsg(SocketArray[indB], userName + " has connected to " + roomName, "Server");
+						}
+					}
+				}
+			}
+
+		}break;
+
+		case 2:
+		{
+			short roomNameLenght = buff.ReadInt16LE();
+			std::string roomName;
+
+			for (short index3 = 0; index3 < roomNameLenght; index3++)
+			{
+				roomName.push_back(buff.ReadChar());
+			}
+
+			for (int indA = 0; indA < sa->rooms.size(); indA++)
+			{
+				if (roomName == sa->rooms[indA])
+				{
+					sa->rooms[indA].erase();
+
+					for (int indB = 0; indB < sa->rooms.size(); indB++)
+					{
+						for (int indC = 0; indC < TotalSockets; indC++)
+						{
+							for (int indD = 0; indD < SocketArray[indC]->rooms.size(); indD++)
+							{
+								if (roomName == SocketArray[indC]->rooms.at(indD) && SocketArray[indC]->rooms.at(indD) != "")
+								{
+									sendMsg(SocketArray[indC],	sa->UserName + " has disconnected from " + roomName, "Server");
+								}
+							}
+						}
+					}
+				}
+			}
+		}break;
+
+		case 3:
+		{
+			short msgLenght = buff.ReadInt16LE();
+			std::string msg;
+			for (short index3 = 0; index3 < msgLenght; index3++)
+			{
+				msg.push_back(buff.ReadChar());
+			}
+
+			for (int indA = 0; indA < sa->rooms.size(); indA++)
+			{
+				for (int indB = 0; indB < TotalSockets; indB++)
+				{
+					for (int indC = 0; indC < SocketArray[indB]->rooms.size(); indC++)
+					{
+						if (sa->rooms.at(indA) == SocketArray[indB]->rooms.at(indC) && sa->rooms.at(indA) != "")
+						{
+							sendMsg(SocketArray[indB], msg, sa->UserName);
+						}
+					}
+				}
+			}
+		}break;
+		default:
+			break;
+	}
+}
