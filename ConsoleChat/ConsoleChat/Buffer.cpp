@@ -109,3 +109,50 @@ void Buffer::WriteChar(char value) {
 
 	this->mWriteIndex += 1;
 }
+
+int Buffer::ReadInt32LE(unsigned int index) {
+	int fourthByteBE = (int)this->mBuffer[index + 0];
+	int thirdByteBE = (int)this->mBuffer[index + 1];
+	int secondByteBE = (int)this->mBuffer[index + 2];
+	int firstByteBE = (int)this->mBuffer[index + 3];
+
+	return (firstByteBE << 24) | (secondByteBE << 16) | (thirdByteBE << 8) |
+		(fourthByteBE << 0);
+}
+
+int Buffer::ReadInt32LE() {
+	// Is large enough?
+	int fourthByteBE = (int)this->mBuffer[mReadIndex + 0];
+	int thirdByteBE = (int)this->mBuffer[mReadIndex + 1];
+	int secondByteBE = (int)this->mBuffer[mReadIndex + 2];
+	int firstByteBE = (int)this->mBuffer[mReadIndex + 3];
+
+	this->mReadIndex += 4;
+
+	return (firstByteBE << 24) | (secondByteBE << 16) | (thirdByteBE << 8) |
+		(fourthByteBE << 0);
+}
+
+short Buffer::ReadInt16LE(unsigned int index) {
+	short secondByteBE = (short)this->mBuffer[index + 0];
+	short firstByteBE = (short)this->mBuffer[index + 1];
+
+	return (firstByteBE << 8) | (secondByteBE << 0);
+}
+
+short Buffer::ReadInt16LE() {
+	short secondByteBE = (short)this->mBuffer[mReadIndex + 0];
+	short firstByteBE = (short)this->mBuffer[mReadIndex + 1];
+
+	this->mReadIndex += 2;
+
+	return (firstByteBE << 8) | (secondByteBE << 0);
+}
+
+char Buffer::ReadChar(unsigned int index) { return (char)this->mBuffer[index]; }
+
+char Buffer::ReadChar() {
+	this->mReadIndex += 1;
+
+	return (char)this->mBuffer[(this->mReadIndex) - 1];
+}
