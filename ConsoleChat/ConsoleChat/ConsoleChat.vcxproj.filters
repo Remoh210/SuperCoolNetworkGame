@@ -21,6 +21,9 @@
     <ClCompile Include="Buffer.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectionMaintainer.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h">
