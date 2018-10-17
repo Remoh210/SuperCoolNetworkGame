@@ -396,7 +396,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 			{
 				userName.push_back(buff.ReadChar());
 			}
-			sa->UserName = userName;
+			sa->UserName = userName + " ";
 
 			for (int indA = 0; indA < sa->rooms.size(); indA++)
 			{
