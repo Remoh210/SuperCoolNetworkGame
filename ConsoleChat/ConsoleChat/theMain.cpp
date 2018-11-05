@@ -90,11 +90,11 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 	if (Conn.isAlive) {
 		cout << "You appear to be connected!\n"
 			<< "Typing -j means that you're gonna join to the room number ... (which you also have to specify). \n-l means LEAVE!\n";
-		//Sleep(8000);
+		Sleep(3000);
 	}
 	else {
 		cout << "Looks like the server is down, no luck this time.\n";
-		//Sleep(8000);
+		Sleep(3000);
 	}
 
 
