@@ -82,6 +82,9 @@
     <Filter Include="Scripting\cCommands\Follow\FollowCurve">
       <UniqueIdentifier>{f3ca4672-a0a3-4355-bbbe-3aca8929a011}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{a51ea69a-3861-4e66-b865-4946ebfc9ec4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -201,6 +204,12 @@
     <ClCompile Include="cFollowCurve.cpp">
       <Filter>Scripting\cCommands\Follow\FollowCurve</Filter>
     </ClCompile>
+    <ClCompile Include="Server\Buffer.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Server.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="linmath.h">
@@ -304,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="cFollowCurve.h">
       <Filter>Scripting\cCommands\Follow\FollowCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Buffer.h">
+      <Filter>Server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

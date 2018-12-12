@@ -187,6 +187,8 @@
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="PlayerCollision.cpp" />
     <ClCompile Include="PlyFileLoader.cpp" />
+    <ClCompile Include="Server\Buffer.cpp" />
+    <ClCompile Include="Server\Server.cpp" />
     <ClCompile Include="sModelDrawInfo.cpp" />
     <ClCompile Include="SmoothStep.cpp" />
     <ClCompile Include="sNVPair.cpp" />
@@ -223,6 +225,7 @@
     <ClInclude Include="globalStuff.h" />
     <ClInclude Include="iCommand.h" />
     <ClInclude Include="linmath.h" />
+    <ClInclude Include="Server\Buffer.h" />
     <ClInclude Include="sModelDrawInfo.h" />
     <ClInclude Include="SmoothStep.h" />
     <ClInclude Include="sNVPair.h" />
