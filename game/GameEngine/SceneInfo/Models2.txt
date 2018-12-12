@@ -1,0 +1,44 @@
+Friendly_Name mig
+Mesh_Name mig.ply
+Position -690 -60 1935
+DiffureRGB_Alpha  1 0.4 0.2 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures:  0
+Friendly_Name Ufo2UVb
+Mesh_Name Ufo2UVb.ply
+Position -690 -60 1935
+DiffureRGB_Alpha  1 0.4 0.2 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  10 10 10
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures:  0
+Friendly_Name DebugCube
+Mesh_Name cube_flat_shaded_xyz_n_uv.ply
+Position 0 0 0
+DiffureRGB_Alpha  0 1 0 1
+SpecularRGB_Power 1 1 1 1
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures:  0
+Friendly_Name terrain
+Mesh_Name terrain.ply
+Position 0 0 0
+DiffureRGB_Alpha  1 1 1 1
+SpecularRGB_Power 1 1 1 1
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures:  0

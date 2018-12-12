@@ -1,0 +1,193 @@
+Friendly_Name teapot
+Mesh_Name Utah_Teapot_xyz_n_GARBAGE_uv.ply
+Position 300 335 -560
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation -0.707107 0 0 0.707107
+Scale  0.9 0.9 0.9
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures: 1
+Texture0_name metal.bmp
+Texture0_strength 1
+Friendly_Name roomUV
+Mesh_Name roomUV.ply
+Position -110 25 110
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  100 100 100
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name roomTex.bmp
+Texture0_strength 1
+Friendly_Name Ufo2UVb
+Mesh_Name Ufo2UVb.ply
+Position -690 10 1935
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  120.399 120.399 120.399
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures: 1
+Texture0_name metal.bmp
+Texture0_strength 1
+Friendly_Name table
+Mesh_Name table.ply
+Position 510 -30 910
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  2.9 2.9 2.9
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 2
+Texture0_name metal.bmp
+Texture0_strength 0.262006
+Texture1_name wood.bmp
+Texture1_strength 0.737998
+Friendly_Name knight
+Mesh_Name knight.ply
+Position 1355 355 -625
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  22.6 22.6 22.6
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name knightTex.bmp
+Texture0_strength 1
+Friendly_Name knight2
+Mesh_Name knight2.ply
+Position 1270 465 1910
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 -0.999574 0 -0.0291996
+Scale  20.4 20.4 20.4
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name knight2Tex.bmp
+Texture0_strength 1
+Friendly_Name fireplace
+Mesh_Name fireplace.ply
+Position -615 -170 20
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  64.2002 64.2002 64.2002
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name fireplace.bmp
+Texture0_strength 1
+Friendly_Name lantern
+Mesh_Name lantern.ply
+Position 360 130 1010
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  1.80001 1.80001 1.80001
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name lantern.bmp
+Texture0_strength 1
+Friendly_Name cat
+Mesh_Name cat.ply
+Position -445 95 850
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 -0.991665 0 -0.128845
+Scale  11.4 11.4 11.4
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name cat.bmp
+Texture0_strength 1
+Friendly_Name bread
+Mesh_Name bread.ply
+Position 760 120 900
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  102.8 102.8 102.8
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name bread.bmp
+Texture0_strength 1
+Friendly_Name Sphere_320_faces_xyz_n
+Mesh_Name Sphere_320_faces_xyz_n.ply
+Position 686 2220 185
+DiffureRGB_Alpha  1 1 1 1
+SpecularRGB_Power 1 1 1 1
+QuatXYZW_rotation 0 0 0 1
+Scale  30 30 30
+IsVisible  0
+IsUpdByPhys  0
+IsWireFrame  0
+Textures:  0
+Friendly_Name AxePainted
+Mesh_Name AxePainted.ply
+Position -530 390 -770
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 -2.98023e-08 0 1
+Scale  33.6 33.6 33.6
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name AxeTex.bmp
+Texture0_strength 1
+Friendly_Name terrain
+Mesh_Name terrain.ply
+Position 0 0 0
+DiffureRGB_Alpha  1 1 1 1
+SpecularRGB_Power 1 1 1 1
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  0
+IsUpdByPhys  0
+IsWireFrame  0
+Textures:  0
+Friendly_Name pokeball
+Mesh_Name pokeball.ply
+Position 535 160 885
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 -0.999574 0 -0.0291996
+Scale  0.4 0.4 0.4
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name pokeballTex.bmp
+Texture0_strength 1
+Friendly_Name ivysaur
+Mesh_Name ivysaur.ply
+Position 285 245 825
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 -0.999575 0 -0.0291996
+Scale  132.799 132.799 132.799
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures: 1
+Texture0_name ivysaurTex.bmp
+Texture0_strength 1

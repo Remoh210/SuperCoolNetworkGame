@@ -1,0 +1,2 @@
+Camera_position 0 0 0
+Camera_Speed 3000
