@@ -95,7 +95,7 @@ void key_callback( GLFWwindow* window,
 
 	if (glfwGetKey(window, GLFW_KEY_L))
 	{
-		loadModels("Models2.txt", vec_pObjectsToDraw);
+		loadModels("Models.txt", vec_pObjectsToDraw);
 		loadLights("lights.txt", LightManager->vecLights);
 	}
 
@@ -272,8 +272,8 @@ bool AreAllModifiersUp(GLFWwindow* window)
 
 void ProcessAsynKeys(GLFWwindow* window)
 {
-	const float CAMERA_SPEED_SLOW = 5.0f;
-	const float CAMERA_SPEED_FAST = 10.0f;
+	const float CAMERA_SPEED_SLOW = 0.2f;
+	const float CAMERA_SPEED_FAST = 1.0f;
 
 	// WASD + q = "up", e = down		y axis = up and down
 	//									x axis = left and right

@@ -18,7 +18,7 @@ Mesh_Name earth.ply
 Position 1395 2155 -3690
 DiffureRGB_Alpha  0 0 0 0.4
 SpecularRGB_Power 1 1 1 100
-QuatXYZW_rotation 0 0.930131 0 -0.368972
+QuatXYZW_rotation 0 0.535899 0 0.845083
 Scale  3.3 3.3 3.3
 IsVisible  1
 IsUpdByPhys  0
@@ -28,7 +28,7 @@ Texture0_name earthCloudsTexDiscard.bmp
 Texture0_strength 1
 Friendly_Name car
 Mesh_Name car.ply
-Position 0 0 0
+Position -0.2 -1.49012e-07 -73.5999
 DiffureRGB_Alpha  0 1 0 1
 SpecularRGB_Power 1 1 1 100
 QuatXYZW_rotation 0 0 0 1
@@ -36,4 +36,17 @@ Scale  1 1 1
 IsVisible  1
 IsUpdByPhys  1
 IsWireFrame  0
-Textures: 0
+Textures:  0
+Friendly_Name track
+Mesh_Name road.ply
+Position 0 0 0
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures: 1
+Texture0_name roadTex.bmp
+Texture0_strength 1
