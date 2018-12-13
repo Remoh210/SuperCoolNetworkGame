@@ -32,7 +32,7 @@ GLuint program;
 cDebugRenderer* g_pDebugRendererACTUAL = NULL;
 iDebugRenderer* g_pDebugRenderer = NULL;
 cLuaBrain* p_LuaScripts = NULL;
-//cCommandGroup sceneCommandGroup;
+cCommandGroup sceneCommandGroup("SceneCG");
 int cou;
 std::vector<cAABB::sAABB_Triangle> vec_cur_AABB_tris;
 void UpdateWindowTitle(void);
@@ -358,7 +358,34 @@ int main(void)
 	//::p_LuaScripts->SetObjectVector(&(::vec_pObjectsToDraw));
 
 	//::p_LuaScripts->LoadScriptFile("example.lua");
+	camera.b_controlledByScript = true;
+	//COMMANDS
+	cFollowObjectCommand* newCommand = new cFollowObjectCommand();
 
+	cMeshObject* p_camObj = new cMeshObject();
+	p_camObj->friendlyName = "cameraObj";
+	p_camObj->position = camera.Position;
+
+	std::vector<sNVPair> vecInitValues;
+
+	sNVPair ObjectToMove;				ObjectToMove.pMeshObj = p_camObj;
+	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
+	sNVPair minDistance;				minDistance.fValue = 8;
+	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 30;
+	sNVPair maxSpeed;					maxSpeed.fValue = 100;
+	sNVPair TargetObject;				TargetObject.pMeshObj = findObjectByFriendlyName("car");
+	sNVPair Time;						Time.fValue = 0;
+
+	vecInitValues.push_back(ObjectToMove);
+	vecInitValues.push_back(IdealRelPos);
+	vecInitValues.push_back(minDistance);
+	vecInitValues.push_back(maxSpeedDistance);
+	vecInitValues.push_back(maxSpeed);
+	vecInitValues.push_back(TargetObject);
+	vecInitValues.push_back(Time);
+
+	newCommand->Initialize(vecInitValues);
+	sceneCommandGroup.vecCommands.push_back(newCommand);
 
 
 
@@ -419,116 +446,6 @@ int main(void)
 
 
 
-//		{// START OF: AABB debug stuff
-////HACK: Draw Debug AABBs...
-//
-//// Get that from FindObjectByID()
-//			cMeshObject* pTheBunny = findObjectByFriendlyName("Ufo2UVb");
-//			cMeshObject* pter = findObjectByFriendlyName("terrain");
-//			// Highlight the AABB that the rabbit is in (Or the CENTRE of the rabbit, anyway)
-//
-//			float sideLength = 50.0f;
-//			cMeshObject* pCubeForBallsToBounceIn = new cMeshObject();
-//
-//			pCubeForBallsToBounceIn->setDiffuseColour(glm::vec3(0.0f, 1.0f, 0.0f));
-//			pCubeForBallsToBounceIn->bDontLight = true;
-//			pCubeForBallsToBounceIn->position = pTheBunny->position;
-//			pCubeForBallsToBounceIn->friendlyName = "CubeBallsBounceIn";
-//			pCubeForBallsToBounceIn->meshName = "cube_flat_shaded_xyz_n_uv.ply";		// "cube_flat_shaded_xyz.ply";
-//			pCubeForBallsToBounceIn->setUniformScale(sideLength / 2);
-//			pCubeForBallsToBounceIn->bIsWireFrame = true;
-//			glm::mat4 iden = glm::mat4(1.0f);
-//			DrawObject(pCubeForBallsToBounceIn, iden, program);
-//
-//			unsigned long long ID_of_AABB_We_are_in = cAABB::generateID(pTheBunny->position, sideLength);
-//
-//			// Is there a box here? 
-//			std::map< unsigned long long /*ID of the AABB*/, cAABB* >::iterator itAABB_Bunny
-//				= ::g_pTheTerrain->m_mapAABBs.find(ID_of_AABB_We_are_in);
-//
-//			// Is there an AABB there? 
-//			if (itAABB_Bunny != ::g_pTheTerrain->m_mapAABBs.end())
-//			{
-//				// Yes, then get the triangles and do narrow phase collision
-//
-//			//	std::cout << "ID = " << ID_of_AABB_We_are_in
-//				//	<< " with " << itAABB_Bunny->second->vecTriangles.size() << " triangles" << std::endl;
-//
-//				vec_cur_AABB_tris = itAABB_Bunny->second->vecTriangles;
-//				// *******************************************************************
-//				// Here you can pass this vector of triangles into your narrow phase (aka project #1)
-//				// and do whatever collision response you want
-//				// *******************************************************************
-//			}
-//			else
-//			{
-//				if (vec_cur_AABB_tris.size() > 0) {
-//					vec_cur_AABB_tris.clear();
-//				}
-//				//	std::cout << "ID = " << ID_of_AABB_We_are_in << " NOT PRESENT near bunny" << std::endl;
-//			}
-//
-//
-//			std::map< unsigned long long /*ID of the AABB*/, cAABB* >::iterator itAABB
-//				= ::g_pTheTerrain->m_mapAABBs.begin();
-//			for (; itAABB != ::g_pTheTerrain->m_mapAABBs.end(); itAABB++)
-//			{
-//
-//				// You could draw a mesh cube object at the location, 
-//				// but be careful that it's scalled and placed at the right location.
-//				// i.e. our cube is centred on the origin and is ++2++ units wide, 
-//				// because it's +1 unit from the centre (on all sides).
-//
-//				// Since this is debug, and the "draw debug line thing" is working, 
-//				// this will just draw a bunch of lines... 
-//
-//				cAABB* pCurrentAABB = itAABB->second;
-//
-//				glm::vec3 cubeCorners[6];
-//
-//				cubeCorners[0] = pCurrentAABB->getMinXYZ();
-//				cubeCorners[1] = pCurrentAABB->getMinXYZ();
-//				cubeCorners[2] = pCurrentAABB->getMinXYZ();
-//				cubeCorners[3] = pCurrentAABB->getMinXYZ();
-//				cubeCorners[4] = pCurrentAABB->getMinXYZ();
-//				cubeCorners[5] = pCurrentAABB->getMinXYZ();
-//
-//				// Max XYZ
-//				cubeCorners[1].x += pCurrentAABB->getSideLength();
-//				cubeCorners[1].y += pCurrentAABB->getSideLength();
-//				cubeCorners[1].z += pCurrentAABB->getSideLength();
-//
-//				cubeCorners[2].x += pCurrentAABB->getSideLength();
-//
-//				cubeCorners[3].y += pCurrentAABB->getSideLength();
-//
-//				cubeCorners[4].z += pCurrentAABB->getSideLength();
-//
-//				// TODO: And the other corners... 
-//				cubeCorners[5].x += pCurrentAABB->getSideLength();
-//				cubeCorners[5].y += pCurrentAABB->getSideLength();
-//
-//
-//
-//				cMeshObject* pCubeForBallsToBounceIn = new cMeshObject();
-//
-//				pCubeForBallsToBounceIn->setDiffuseColour(glm::vec3(0.0f, 1.0f, 0.0f));
-//				pCubeForBallsToBounceIn->bDontLight = true;
-//				pCubeForBallsToBounceIn->position = pCurrentAABB->getCentre();
-//				pCubeForBallsToBounceIn->friendlyName = "CubeBallsBounceIn";
-//				pCubeForBallsToBounceIn->meshName = "cube_flat_shaded_xyz_n_uv.ply";		// "cube_flat_shaded_xyz.ply";
-//				pCubeForBallsToBounceIn->setUniformScale(pCurrentAABB->getSideLength() / 2);
-//				pCubeForBallsToBounceIn->bIsWireFrame = true;
-//				glm::mat4 iden = glm::mat4(1.0f);
-//				DrawObject(pCubeForBallsToBounceIn, iden, program);
-//
-//
-//				// Draw line from minXYZ to maxXYZ
-//				//::g_pDebugRenderer->addLine(cubeCorners[0], cubeCorners[1],
-//					//glm::vec3(1, 1, 1), 0.0f);
-//			}
-//		}// END OF: Scope for aabb debug stuff
-		// 
 
 
 		//std::sort(vec_sorted_drawObj.begin(), vec_sorted_drawObj.end(), transp);
@@ -683,7 +600,7 @@ int main(void)
 
 
 		
-		
+		sceneCommandGroup.Update(deltaTime);
 		//::p_LuaScripts->UpdateCG(deltaTime);
 		//::p_LuaScripts->Update(deltaTime);
 

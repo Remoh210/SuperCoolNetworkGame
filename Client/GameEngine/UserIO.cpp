@@ -140,23 +140,17 @@ void key_callback( GLFWwindow* window,
 	}
 
 
-	if (key == GLFW_KEY_9 && action == GLFW_PRESS)
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
 	{
 
-
-		//::p_LuaScripts->Update(deltaTime);
-
-		//::p_LuaScripts->UpdateCG(deltaTime);
+		camera.b_controlledByScript = false;
 
 	}
 
-	if (key == GLFW_KEY_8 && action == GLFW_PRESS)
+	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
 	{
 
-
-		//::p_LuaScripts->Update(deltaTime);
-
-		//::p_LuaScripts->UpdateCG(deltaTime);
+		camera.b_controlledByScript = true;
 		
 	}
 	

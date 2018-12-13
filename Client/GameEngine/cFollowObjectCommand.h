@@ -29,7 +29,7 @@ private:
 	glm::vec3 idealPosition;
 	glm::vec3 idealRelPosition;
 
-	
+
 	cMeshObject* theObj;
 	cMeshObject* targetObj;
 

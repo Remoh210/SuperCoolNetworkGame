@@ -13,14 +13,14 @@ void cFollowObjectCommand::Initialize(std::vector<sNVPair> vecNVPairs)
 {
 	// Pull the data out of the vector
 	this->theObj = vecNVPairs[0].pMeshObj;
-	this->idealRelPosition = vecNVPairs[1].v3Value;	
-	this->minDistance = vecNVPairs[2].fValue;	
-	this->maxSpeedDistance = vecNVPairs[3].fValue;		
-	this->maxSpeed = vecNVPairs[4].fValue;		
+	this->idealRelPosition = vecNVPairs[1].v3Value;
+	this->minDistance = vecNVPairs[2].fValue;
+	this->maxSpeedDistance = vecNVPairs[3].fValue;
+	this->maxSpeed = vecNVPairs[4].fValue;
 	this->targetObj = vecNVPairs[5].pMeshObj;
 	this->time = vecNVPairs[6].fValue;
 	this->b_Started = false;
-
+	camera.b_controlledByScript = true;
 	return;
 }
 
@@ -58,12 +58,12 @@ void cFollowObjectCommand::Update(double deltaTime)
 
 	glm::vec3 velocity = directionNormal * vecMaxSpeed;
 
-	
+
 	glm::vec3 deltaPosition = (float)deltaTime * velocity;
 
 	this->theObj->position += deltaPosition;
 
-	if (theObj->friendlyName == "cameraObj")
+	if (theObj->friendlyName == "cameraObj" && camera.b_controlledByScript)
 	{
 		camera.Position = theObj->position;
 		camera.SetViewMatrix(glm::lookAt(camera.Position, this->targetObj->position, glm::vec3(0.0f, 1.0f, 0.0f)));
@@ -82,10 +82,10 @@ void cFollowObjectCommand::Update(double deltaTime)
 
 bool cFollowObjectCommand::isFinished(void)
 {
-	if (this->m_bIsDone) { 
+	if (this->m_bIsDone) {
 
-		 camera.b_controlledByScript = false; 
-		 return true;
+		camera.b_controlledByScript = false;
+		return true;
 	}
 	else { return false; }
 
