@@ -50,3 +50,16 @@ IsWireFrame  0
 Textures: 1
 Texture0_name roadTex.bmp
 Texture0_strength 1
+Friendly_Name ground
+Mesh_Name upper.ply
+Position 0 -2.2 0
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures: 1
+Texture0_name sandTex.bmp
+Texture0_strength 1
