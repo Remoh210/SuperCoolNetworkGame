@@ -286,51 +286,63 @@ void ProcessAsynKeys(GLFWwindow* window)
 	{
 		// Note: The "== GLFW_PRESS" isn't really needed as it's actually "1" 
 		// (so the if() treats the "1" as true...)
-
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) 
+		if (camera.b_controlledByScript) 
 		{
+			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			{
 
-			
 
-			glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
-		
-			// orientation
-			glm::quat qPlayerRot = pPlayer->getQOrientation();
-			glm::mat4 matQPlayeRot = glm::mat4(qPlayerRot);
-		
-			glm::vec4 vecForwardDirection_WorldSpace = matQPlayeRot * vecForwardDirection_ModelSpace;
-		
-			// optional normalize
-			vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
-		
-			// Adjust the speed relative to the direction
-			float forwardSpeed = 10.0f;
-			float forwardSpeedThisFrame = forwardSpeed * deltaTime;
-		
-			glm::vec3 positionAdjustThisFrame = vecForwardDirection_WorldSpace * forwardSpeedThisFrame;
-		
-			// Update the position (in the direction it's facing)
-			pPlayer->position += positionAdjustThisFrame;
+					glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
 
+					// orientation
+					glm::quat qPlayerRot = pPlayer->getQOrientation();
+					glm::mat4 matQPlayeRot = glm::mat4(qPlayerRot);
+
+					glm::vec4 vecForwardDirection_WorldSpace = matQPlayeRot * vecForwardDirection_ModelSpace;
+
+					// optional normalize
+					vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
+
+					// Adjust the speed relative to the direction
+					float forwardSpeed = 10.0f;
+					float forwardSpeedThisFrame = forwardSpeed * deltaTime;
+
+					glm::vec3 positionAdjustThisFrame = vecForwardDirection_WorldSpace * forwardSpeedThisFrame;
+
+					// Update the position (in the direction it's facing)
+					pPlayer->position += positionAdjustThisFrame;
+
+
+
+			}
+
+			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			{
+				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.002f, 0.0f), false);
+
+			}
+			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			{
+				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, -0.002f, 0.0f), false);
+
+			}
 
 		}
-
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		if (!camera.b_controlledByScript)
 		{
-			pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.002f, 0.0f), false);
-
+			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+				camera.ProcessKeyboard(FORWARD, deltaTime);
+			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+				camera.ProcessKeyboard(BACKWARD, deltaTime);
+			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+				camera.ProcessKeyboard(LEFT, deltaTime);
+			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+				camera.ProcessKeyboard(RIGHT, deltaTime);
+			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+				camera.ProcessKeyboard(UP, deltaTime);
+			if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+				camera.ProcessKeyboard(DOWN, deltaTime);
 		}
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		{
-			pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, -0.002f, 0.0f), false);
-
-		}
-		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-			camera.ProcessKeyboard(UP, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-			camera.ProcessKeyboard(DOWN, deltaTime);
-
-
 	}//if(AreAllModifiersUp(window)
 
 	//const float MIN_LIGHT_BRIGHTNESS = 0.001f;
@@ -409,18 +421,7 @@ void ProcessAsynKeys(GLFWwindow* window)
 	}
 
 	if (IsShiftDown(window)) {
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-			camera.ProcessKeyboard(FORWARD, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-			camera.ProcessKeyboard(BACKWARD, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-			camera.ProcessKeyboard(LEFT, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-			camera.ProcessKeyboard(RIGHT, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-			camera.ProcessKeyboard(UP, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-			camera.ProcessKeyboard(DOWN, deltaTime);
+
 	}
 	//OBJECT CONTROL***********************************************************
 	if ( IsAltDown(window) )

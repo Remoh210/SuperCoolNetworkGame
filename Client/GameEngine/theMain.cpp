@@ -370,7 +370,7 @@ int main(void)
 
 	sNVPair ObjectToMove;				ObjectToMove.pMeshObj = p_camObj;
 	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
-	sNVPair minDistance;				minDistance.fValue = 2;
+	sNVPair minDistance;				minDistance.fValue = 4;
 	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 20;
 	sNVPair maxSpeed;					maxSpeed.fValue = 30;
 	sNVPair TargetObject;				TargetObject.pMeshObj = findObjectByFriendlyName("car");
