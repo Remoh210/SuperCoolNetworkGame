@@ -37,6 +37,39 @@ IsVisible  1
 IsUpdByPhys  1
 IsWireFrame  0
 Textures:  0
+Friendly_Name car1
+Mesh_Name car.ply
+Position 4.2 1.5 -73.5999
+DiffureRGB_Alpha  1 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures:  0
+Friendly_Name car2
+Mesh_Name car.ply
+Position -2.2 1.5 -73.5999
+DiffureRGB_Alpha  1 1 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures:  0
+Friendly_Name car3
+Mesh_Name car.ply
+Position 2.2 1.5 -73.5999
+DiffureRGB_Alpha  0 0 1 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures:  0
 Friendly_Name track
 Mesh_Name road.ply
 Position 0 0 0

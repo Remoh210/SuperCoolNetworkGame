@@ -429,8 +429,8 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 				userName.push_back(buff.ReadChar());
 			}
 			sa->UserName = userName + " ";
-			sa->id = userNum;
-			userNum++;
+			sa->id = userNum; //assign this user/socket an id
+			userNum++; //increment the next id to be given
 
 			for (int indA = 0; indA < sa->rooms.size(); indA++)
 			{
