@@ -152,6 +152,7 @@ void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msg
 		// Writing
 		connBuff->WriteInt32LE(packetLenght);
 		connBuff->WriteChar(MSG_ID_INPUT);
+		connBuff->WriteInt16LE(playerID);
 		connBuff->WriteInt16LE(messageNum);
 		connBuff->WriteInt16LE(msgLenght);
 		for (int i = 0; i < msgLenght; i++) connBuff->WriteChar(message.at(i));
@@ -244,10 +245,10 @@ string ConnectionMaintainer::getMessages() {
 				// get current id of this msg
 				if (got_current_msg_id == false) {
 					got_current_msg_id = true;
-					if (id != this->last_sent_msg_id) {
+					/*if (id != this->last_sent_msg_id) {
 						std::cout << "id out of order... update with CSP" << std::endl;
 						return "CSP";
-					}
+					}*/
 				}
 
 				// Read

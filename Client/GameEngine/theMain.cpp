@@ -852,8 +852,9 @@ void sendInput() {
 		Recieve_Message = Conn.getMessages();
 		//char* RoomName;
 		//RoomName = new char[ARRAY_SIZE];
-		playerID = Conn.playerPackageID;
-		cMeshObject* player = players[playerID].obj;//findObjectByFriendlyName("car");
+		//playerID = Conn.playerPackageID;
+		int currentID = Conn.playerPackageID;
+		cMeshObject* player = players[currentID].obj;//findObjectByFriendlyName("car");
 		
 		//Send_Message = std::to_string(msg_ids);
 		Send_Message = "w";
@@ -873,21 +874,25 @@ void sendInput() {
 			if (Recieve_Message == "Server->JoinAs0")
 			{
 				playerID = 0;
+				Conn.playerID = 0;
 				cout << "PlayerID: " << playerID << std::endl;
 			}
 			else if (Recieve_Message == "Server->JoinAs1")
 			{
 				playerID = 1;
+				Conn.playerID = 1;
 				cout << "PlayerID: " << playerID << std::endl;
 			}
 			else if (Recieve_Message == "Server->JoinAs2")
 			{
 				playerID = 2;
+				Conn.playerID = 2;
 				cout << "PlayerID: " << playerID << std::endl;
 			}
 			else if (Recieve_Message == "Server->JoinAs3")
 			{
 				playerID = 3;
+				Conn.playerID = 3;
 				cout << "PlayerID: " << playerID << std::endl;
 			}
 			else

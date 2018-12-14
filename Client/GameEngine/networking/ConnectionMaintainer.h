@@ -46,6 +46,7 @@ public:
 	int recvbuflen = BUFFER_LENGTH;  // The length of the buffer we receive from the server
 
 	int playerPackageID = 0;
+	int playerID = 0;
 
 	int msg_ids;
 	int last_sent_msg_id;
