@@ -852,6 +852,7 @@ void sendInput() {
 		Recieve_Message = Conn.getMessages();
 		//char* RoomName;
 		//RoomName = new char[ARRAY_SIZE];
+		playerID = Conn.playerPackageID;
 		cMeshObject* player = players[playerID].obj;//findObjectByFriendlyName("car");
 		
 		//Send_Message = std::to_string(msg_ids);

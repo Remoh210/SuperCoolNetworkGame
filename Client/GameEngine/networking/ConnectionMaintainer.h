@@ -45,6 +45,8 @@ public:
 	char recvbuf[BUFFER_LENGTH];  // The maximum buffer size of a message to send
 	int recvbuflen = BUFFER_LENGTH;  // The length of the buffer we receive from the server
 
+	int playerPackageID = 0;
+
 	int msg_ids;
 	int last_sent_msg_id;
 	int last_received_msg_id;

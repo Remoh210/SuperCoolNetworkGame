@@ -361,7 +361,7 @@ void sendMsg(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string use
 
 	Buffer buff(packetLength);
 	buff.WriteInt32LE(packetLength);
-
+	buff.WriteInt16LE(sa->id);
 	buff.WriteInt16LE(id);
 
 	for (int index2 = 0; index2 < formatedMsg.size(); index2++)
@@ -383,6 +383,7 @@ void sendMsgValue(LPSOCKET_INFORMATION sa, int id, std::string msg, std::string 
 
 	Buffer buff(packetLength);
 	buff.WriteInt32LE(packetLength);
+	buff.WriteInt16LE(sa->id); //the id of the client sending the message
 	buff.WriteInt16LE(id);
 
 	for (int index2 = 0; index2 < formatedMsg.size(); index2++)
