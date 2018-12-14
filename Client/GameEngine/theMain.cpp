@@ -901,38 +901,10 @@ void sendInput() {
 		}else if (Recieve_Message != "") {
 
 			ChatBuffer += Recieve_Message;
-
-			if (Recieve_Message == "Server->JoinAs0")
-			{
-				playerID = 0;
-				Conn.playerID = 0;
-				cout << "PlayerID: " << playerID << std::endl;
-			}
-			else if (Recieve_Message == "Server->JoinAs1")
-			{
-				playerID = 1;
-				Conn.playerID = 1;
-				cout << "PlayerID: " << playerID << std::endl;
-			}
-			else if (Recieve_Message == "Server->JoinAs2")
-			{
-				playerID = 2;
-				Conn.playerID = 2;
-				cout << "PlayerID: " << playerID << std::endl;
-			}
-			else if (Recieve_Message == "Server->JoinAs3")
-			{
-				playerID = 3;
-				Conn.playerID = 3;
-				cout << "PlayerID: " << playerID << std::endl;
-			}
-			else
-			{
 				cout << ChatBuffer;
 				cout << '\n';
-				double temp = ::atof(ChatBuffer.c_str());
-				player->position.z = temp;
-			}
+			/*	double temp = ::atof(ChatBuffer.c_str());
+				player->position.z = temp;*/
 			//std::string s = ChatBuffer;
 			//char delimiter = ':';
 

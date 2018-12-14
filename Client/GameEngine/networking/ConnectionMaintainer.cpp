@@ -239,8 +239,9 @@ string ConnectionMaintainer::getMessages() {
 				// data for the prefix length
 				packetLength = buff.ReadInt32LE();
 				playerPackageID = buff.ReadInt16LE(); //player id of packet
+				std::cout << "Player id: " << playerPackageID << std::endl;
 				int id = buff.ReadInt16LE();
-				std::cout << "id: " << id << std::endl;
+				std::cout << "Packet id: " << id << std::endl;
 
 				// get current id of this msg
 				if (got_current_msg_id == false) {

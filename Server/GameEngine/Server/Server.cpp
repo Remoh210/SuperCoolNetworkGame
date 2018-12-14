@@ -31,6 +31,7 @@ typedef struct _SOCKET_INFORMATION {
 	cMeshObject * obj;
 	bool GotNewData = 0;
 	int id;
+	int messageID;
 } SOCKET_INFORMATION, *LPSOCKET_INFORMATION;
 
 LPSOCKET_INFORMATION SocketArray[FD_SETSIZE];
@@ -47,6 +48,8 @@ DWORD TotalSockets = 0;
 float yPos = -0.2f;
 float xPos = -1.5f;
 float zPos = -74.0f;
+
+int currentID = 0;
 
 float yRotation = 0.0f;
 
@@ -357,11 +360,14 @@ void sendMsg(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string use
 {
 	std::string formatedMsg = userName + "->" + msg;
 
-	int packetLength = sizeof(INT32) + sizeof(short) + formatedMsg.size();
+	int packetLength = sizeof(INT32) + sizeof(short) + sizeof(short) + formatedMsg.size();
 
 	Buffer buff(packetLength);
-	buff.WriteInt32LE(packetLength);
+	buff.WriteInt32LE(packetLength); //length of the packet
 	buff.WriteInt16LE(sa->id);
+	
+	printf("Client #: %d\n", sa->id);
+
 	buff.WriteInt16LE(id);
 
 	for (int index2 = 0; index2 < formatedMsg.size(); index2++)
@@ -379,11 +385,15 @@ void sendMsgValue(LPSOCKET_INFORMATION sa, int id, std::string msg, std::string 
 {
 	std::string formatedMsg = msg;
 
-	int packetLength = sizeof(INT32) + sizeof(int) + formatedMsg.size();
+	int packetLength = sizeof(INT32) + sizeof(int) + sizeof(short) + sizeof(short) + formatedMsg.size();
 
 	Buffer buff(packetLength);
 	buff.WriteInt32LE(packetLength);
+
 	buff.WriteInt16LE(sa->id); //the id of the client sending the message
+
+	printf("Client #: %d\n", sa->id);
+
 	buff.WriteInt16LE(id);
 
 	for (int index2 = 0; index2 < formatedMsg.size(); index2++)
@@ -433,21 +443,23 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 			}
 			sa->UserName = userName + " ";
 			sa->id = userNum; //assign this user/socket an id
+			currentID = userNum;
 			userNum++; //increment the next id to be given
 
 			for (int indA = 0; indA < sa->rooms.size(); indA++)
 			{
-				for (int indB = 0; indB < TotalSockets; indB++)
-				{
-					for (int indC = 0; indC < SocketArray[indB]->rooms.size(); indC++)
-					{
-						if (roomName == SocketArray[indB]->rooms.at(indC) && SocketArray[indB]->rooms.at(indC) != "")
-						{
-							sendMsg(SocketArray[indB], 0, "JoinAs" + std::to_string(sa->id), "Server");
+				//for (int indB = 0; indB < TotalSockets; indB++)
+				//{
+					//for (int indC = 0; indC < SocketArray[indB]->rooms.size(); indC++)
+					//{
+						//if (roomName == SocketArray[indB]->rooms.at(indC) && SocketArray[indB]->rooms.at(indC) != "")
+						//{
+							sendMsg(SocketArray[indA], sa->messageID, "JoinAs" + std::to_string(sa->id), "Server");
+							//sendMsg(SocketArray[indB], sa->messageID, "JoinAs" + std::to_string(sa->id), "Server");
 							//sendMsg(SocketArray[indB], 0, userName + " has connected to " + roomName, "Server");
-						}
-					}
-				}
+						//}
+					//}
+				//}
 			}
 
 			sa->obj = new cMeshObject();
