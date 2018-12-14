@@ -18,7 +18,7 @@ Mesh_Name earth.ply
 Position 1395 2155 -3690
 DiffureRGB_Alpha  0 0 0 0.4
 SpecularRGB_Power 1 1 1 100
-QuatXYZW_rotation 0 0.0307598 0 1.00022
+QuatXYZW_rotation 0 -0.507235 0 0.862629
 Scale  3.3 3.3 3.3
 IsVisible  1
 IsUpdByPhys  0
@@ -28,7 +28,7 @@ Texture0_name earthCloudsTexDiscard.bmp
 Texture0_strength 1
 Friendly_Name car
 Mesh_Name car.ply
-Position -0.2 1.5 -73.5999
+Position -0.2 0 -73.5999
 DiffureRGB_Alpha  0 1 0 1
 SpecularRGB_Power 1 1 1 100
 QuatXYZW_rotation 0 0 0 1
@@ -95,4 +95,17 @@ IsUpdByPhys  1
 IsWireFrame  0
 Textures: 1
 Texture0_name sandTex.bmp
+Texture0_strength 1
+Friendly_Name tires
+Mesh_Name tires.ply
+Position -1.4 0.4 -29.4
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  0.4 0.4 0.4
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures: 1
+Texture0_name tireTex.bmp
 Texture0_strength 1
