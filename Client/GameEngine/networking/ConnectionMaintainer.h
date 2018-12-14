@@ -52,7 +52,7 @@ public:
 	// Close the connection
 	void closeConnection();
 	// Send a message to the server
-	void sendMessage(Buffer* connBuff, UserInfo info, char msgID,
+	void sendMessage(Buffer* connBuff, UserInfo info, char msgID, short messageNum,
 		string message);
 	// New Messeges
 	string getMessages();

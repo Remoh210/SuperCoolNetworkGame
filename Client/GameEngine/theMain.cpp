@@ -484,7 +484,7 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 		//string RoomName = "main";
 		//User.Room = (char*)RoomName.c_str();
 		ConnRooms.push_back(User.Room);
-		Conn.sendMessage(Send_Buffer, User, MSG_ID_JOIN_ROOM, Send_Message);
+		Conn.sendMessage(Send_Buffer, User, MSG_ID_JOIN_ROOM, 0, Send_Message);
 	}
 
 
@@ -825,7 +825,7 @@ void LoadTerrainAABB(void)
 	return;
 }
 
-int msg_ids = 0;
+short msg_ids = 0;
 #include <fstream>
 void sendInput() {
 	string Send_Message;
@@ -844,10 +844,13 @@ void sendInput() {
 		//RoomName = new char[ARRAY_SIZE];
 		cMeshObject* player = findObjectByFriendlyName("car");
 		
-		Send_Message = std::to_string(msg_ids);
+		//Send_Message = std::to_string(msg_ids);
+		Send_Message = "w";
+		
+		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, msg_ids, Send_Message);
+		
 		msg_ids++;
-		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Send_Message);
-
+		
 		// Checking messege from the server
 		if (Recieve_Message != "") {
 			ChatBuffer += Recieve_Message;

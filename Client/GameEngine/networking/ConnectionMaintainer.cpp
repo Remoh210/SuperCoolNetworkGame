@@ -71,7 +71,7 @@ void ConnectionMaintainer::closeConnection() {
 	WSACleanup();
 }
 
-void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msgID,
+void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msgID, short messageNum,
 	string message) {
 	int packetLenght = 0;
 
@@ -142,12 +142,12 @@ void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msg
 		// Message lenght
 		short msgLenght = message.size();
 
-		packetLenght = sizeof(int) + sizeof(char) + sizeof(short) + msgLenght;
+		packetLenght = sizeof(int) + sizeof(char) + sizeof(short) + sizeof(short) + msgLenght;
 
 		// Writing
 		connBuff->WriteInt32LE(packetLenght);
 		connBuff->WriteChar(MSG_ID_INPUT);
-
+		connBuff->WriteInt16LE(messageNum);
 		connBuff->WriteInt16LE(msgLenght);
 		for (int i = 0; i < msgLenght; i++) connBuff->WriteChar(message.at(i));
 
@@ -230,7 +230,8 @@ string ConnectionMaintainer::getMessages() {
 			else {
 				// data for the prefix length
 				packetLength = buff.ReadInt32LE();
-
+				short id = buff.ReadInt16LE();
+				std::cout << "id: " << id << std::endl;
 				// Read
 				if (packetLength <= bytesInBuffer && packetLength != 0) {
 					for (int i = 0; i < packetLength - 4; i++) {

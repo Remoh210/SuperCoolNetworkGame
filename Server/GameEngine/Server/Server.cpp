@@ -35,7 +35,7 @@ FD_SET ReadSet;
 BOOL CreateSocketInformation(SOCKET s);
 void FreeSocketInformation(DWORD Index);
 void ReadSocket(LPSOCKET_INFORMATION sa);
-void sendMsg(LPSOCKET_INFORMATION sa, std::string msg, std::string userName);
+void sendMsg(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string userName);
 void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg);
 DWORD TotalSockets = 0;
 
@@ -348,14 +348,16 @@ void ReadSocket(LPSOCKET_INFORMATION sa)
 	}
 }
 
-void sendMsg(LPSOCKET_INFORMATION sa, std::string msg, std::string userName)
+void sendMsg(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string userName)
 {
 	std::string formatedMsg = userName + "->" + msg;
 
-	int packetLength = sizeof(INT32) + formatedMsg.size();
+	int packetLength = sizeof(INT32) + sizeof(short) + formatedMsg.size();
 
 	Buffer buff(packetLength);
 	buff.WriteInt32LE(packetLength);
+
+	buff.WriteInt16LE(id);
 
 	for (int index2 = 0; index2 < formatedMsg.size(); index2++)
 	{
@@ -368,14 +370,15 @@ void sendMsg(LPSOCKET_INFORMATION sa, std::string msg, std::string userName)
 	sa->WsaBuffer.len = packetLength;
 	sa->GotNewData = 1;
 }
-void sendMsgValue(LPSOCKET_INFORMATION sa, std::string msg, std::string userName)
+void sendMsgValue(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string userName)
 {
 	std::string formatedMsg = msg;
 
-	int packetLength = sizeof(INT32) + formatedMsg.size();
+	int packetLength = sizeof(INT32) + sizeof(short) + formatedMsg.size();
 
 	Buffer buff(packetLength);
 	buff.WriteInt32LE(packetLength);
+	buff.WriteInt16LE(id);
 
 	for (int index2 = 0; index2 < formatedMsg.size(); index2++)
 	{
@@ -432,7 +435,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 					{
 						if (roomName == SocketArray[indB]->rooms.at(indC) && SocketArray[indB]->rooms.at(indC) != "")
 						{
-							sendMsg(SocketArray[indB], userName + " has connected to " + roomName, "Server");
+							sendMsg(SocketArray[indB], 0, userName + " has connected to " + roomName, "Server");
 						}
 					}
 				}
@@ -464,7 +467,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 							{
 								if (roomName == SocketArray[indC]->rooms.at(indD) && SocketArray[indC]->rooms.at(indD) != "")
 								{
-									sendMsg(SocketArray[indC],	sa->UserName + " has disconnected from " + roomName, "Server");
+									sendMsg(SocketArray[indC], 0,	sa->UserName + " has disconnected from " + roomName, "Server");
 								}
 							}
 						}
@@ -491,7 +494,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 					{
 						if (sa->rooms.at(indA) == SocketArray[indB]->rooms.at(indC) && sa->rooms.at(indA) != "")
 						{
-							sendMsg(SocketArray[indB], msg, sa->UserName);
+							sendMsg(SocketArray[indB], 0, msg, sa->UserName);
 						}
 					}
 				}
@@ -500,6 +503,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 		// update z pos
 		case 4:
 		{
+			short id = buff.ReadInt16LE();
 			short msgLenght = buff.ReadInt16LE();
 			std::string msg;
 			for (short index3 = 0; index3 < msgLenght; index3++)
@@ -526,7 +530,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 							//std::string sendthis = buildstring + ":" + std::to_string(zPos);
 							// zpos
 							std::string sendthis = std::to_string(zPos);
-							sendMsgValue(SocketArray[indB], sendthis, sa->UserName);
+							sendMsgValue(SocketArray[indB], id, sendthis, sa->UserName);
 						}
 					}
 				}
@@ -536,6 +540,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 		// Y rotation input
 		case 5:
 		{
+			short id = buff.ReadInt16LE();
 			short msgLenght = buff.ReadInt16LE();
 			std::string msg;
 			for (short index3 = 0; index3 < msgLenght; index3++)
@@ -553,7 +558,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 						{
 							yRotation += 0.1f;
 							std::string sendthis = std::to_string(zPos);
-							sendMsgValue(SocketArray[indB], sendthis, sa->UserName);
+							sendMsgValue(SocketArray[indB], id, sendthis, sa->UserName);
 						}
 					}
 				}
