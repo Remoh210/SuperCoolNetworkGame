@@ -88,6 +88,7 @@ void DrawObject( cMeshObject* pCurrentMesh,
 				 glm::mat4x4 &matModel, 
 				 GLuint shaderProgramID );
 
+void sendInput();
 
 // *****************************************************************
 // This is part of the physics stuff

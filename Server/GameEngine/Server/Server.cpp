@@ -39,6 +39,10 @@ void sendMsg(LPSOCKET_INFORMATION sa, std::string msg, std::string userName);
 void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg);
 DWORD TotalSockets = 0;
 
+float yPos = -0.2f;
+float xPos = -1.5f;
+float zPos = -74.0f;
+
 int main(void)
 {
 	//Winsock
@@ -470,6 +474,32 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 				}
 			}
 		}break;
+		case 4:
+		{
+			short msgLenght = buff.ReadInt16LE();
+			std::string msg;
+			for (short index3 = 0; index3 < msgLenght; index3++)
+			{
+				msg.push_back(buff.ReadChar());
+			}
+
+			for (int indA = 0; indA < sa->rooms.size(); indA++)
+			{
+				for (int indB = 0; indB < TotalSockets; indB++)
+				{
+					for (int indC = 0; indC < SocketArray[indB]->rooms.size(); indC++)
+					{
+						if (sa->rooms.at(indA) == SocketArray[indB]->rooms.at(indC) && sa->rooms.at(indA) != "")
+						{
+							zPos += 1.0f;
+							std::string sendthis = std::to_string(zPos);
+							sendMsg(SocketArray[indB], sendthis, sa->UserName);
+						}
+					}
+				}
+			}
+		}break;
+
 		default:
 			break;
 	}

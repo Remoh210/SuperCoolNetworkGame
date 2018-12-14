@@ -291,26 +291,31 @@ void ProcessAsynKeys(GLFWwindow* window)
 			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 			{
 
+					pPlayer->position.z += 0.1f;
+					sendInput();
+					//glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
 
-					glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
+					//// orientation
+					//glm::quat qPlayerRot = pPlayer->getQOrientation();
+					//glm::mat4 matQPlayeRot = glm::mat4(qPlayerRot);
 
-					// orientation
-					glm::quat qPlayerRot = pPlayer->getQOrientation();
-					glm::mat4 matQPlayeRot = glm::mat4(qPlayerRot);
+					//glm::vec4 vecForwardDirection_WorldSpace = matQPlayeRot * vecForwardDirection_ModelSpace;
 
-					glm::vec4 vecForwardDirection_WorldSpace = matQPlayeRot * vecForwardDirection_ModelSpace;
+					//// optional normalize
+					//vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
 
-					// optional normalize
-					vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
+					//// Adjust the speed relative to the direction
+					//float forwardSpeed = 10.0f;
+					//float forwardSpeedThisFrame = forwardSpeed * deltaTime;
 
-					// Adjust the speed relative to the direction
-					float forwardSpeed = 10.0f;
-					float forwardSpeedThisFrame = forwardSpeed * deltaTime;
+					//glm::vec3 positionAdjustThisFrame = vecForwardDirection_WorldSpace * forwardSpeedThisFrame;
 
-					glm::vec3 positionAdjustThisFrame = vecForwardDirection_WorldSpace * forwardSpeedThisFrame;
+					//// Update the position (in the direction it's facing)
+					//pPlayer->position += positionAdjustThisFrame;
 
-					// Update the position (in the direction it's facing)
-					pPlayer->position += positionAdjustThisFrame;
+
+
+
 
 
 

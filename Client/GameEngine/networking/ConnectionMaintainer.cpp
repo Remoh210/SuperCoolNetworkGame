@@ -138,6 +138,22 @@ void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msg
 	}
 
 								   break;
+	case MSG_ID_INPUT: {
+		// Message lenght
+		short msgLenght = message.size();
+
+		packetLenght = sizeof(int) + sizeof(char) + sizeof(short) + msgLenght;
+
+		// Writing
+		connBuff->WriteInt32LE(packetLenght);
+		connBuff->WriteChar(MSG_ID_INPUT);
+
+		connBuff->WriteInt16LE(msgLenght);
+		for (int i = 0; i < msgLenght; i++) connBuff->WriteChar(message.at(i));
+
+	}
+
+								   break;
 
 	default:
 		break;

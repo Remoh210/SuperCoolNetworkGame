@@ -28,7 +28,7 @@ Texture0_name earthCloudsTexDiscard.bmp
 Texture0_strength 1
 Friendly_Name car
 Mesh_Name car.ply
-Position -0.2 -1.49012e-07 -73.5999
+Position -0.2 1.5 -73.5999
 DiffureRGB_Alpha  0 1 0 1
 SpecularRGB_Power 1 1 1 100
 QuatXYZW_rotation 0 0 0 1

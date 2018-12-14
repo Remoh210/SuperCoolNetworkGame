@@ -17,6 +17,7 @@
 #define MSG_ID_JOIN_ROOM 1
 #define MSG_ID_LEAVE_ROOM 2
 #define MSG_ID_LEAVE_THE_MESSAGE 3
+#define MSG_ID_INPUT 4
 
 
 struct UserInfo {

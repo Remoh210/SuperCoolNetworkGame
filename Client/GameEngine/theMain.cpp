@@ -61,6 +61,8 @@ void UpdateWindowTitle(void);
 double currentTime = 0;
 double deltaTime = 0;
 
+void sendInput();
+
 void DoPhysicsUpdate( double deltaTime, 
 					  std::vector< cMeshObject* > &vec_pObjectsToDraw );
 
@@ -116,6 +118,8 @@ void DoPhysicsCheckpointNumberFour(double deltaTime);
 void LoadTerrainAABB(void);
 
 
+ConnectionMaintainer Conn;
+UserInfo User;
 
 int main(void)
 {
@@ -397,17 +401,6 @@ int main(void)
 	//*****************************************************************
 
 
-
-
-
-
-
-
-
-
-
-
-	UserInfo User;
 	std::cout << " \n\
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
@@ -458,7 +451,7 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 	// Buffer recieve
 	Buffer* Recieve_Buffer = new Buffer(BUFFER_LENGTH);
 
-	ConnectionMaintainer Conn;
+	
 	Conn.Connect(User);
 
 
@@ -496,6 +489,21 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 	// Draw the "scene" (run the program)
 	while (!glfwWindowShouldClose(window))
     {
+
+		if (Conn.isAlive)
+		{
+			Recieve_Message = Conn.getMessages();
+
+			// Checking messege from the server
+			if (Recieve_Message != "") {
+				ChatBuffer += Recieve_Message;
+
+				cout << ChatBuffer;
+				cout << '\n';
+
+			}
+
+		}
 
 		// Switch to the shader we want
 		::pTheShaderManager->useShaderProgram( "BasicUberShader" );
@@ -761,28 +769,8 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 		ProcessAsynKeys(window);
 
 
-		if (Conn.isAlive) 
-		{
-			Recieve_Message = Conn.getMessages();
-			//char* RoomName;
-			//RoomName = new char[ARRAY_SIZE];
-			cMeshObject* player = findObjectByFriendlyName("car");
-			Send_Message = to_string(player->position.x) + " " + to_string(player->position.y) + " " + to_string(player->position.z);
-			Conn.sendMessage(Send_Buffer, User, MSG_ID_LEAVE_THE_MESSAGE, Send_Message);
-		
+		//sendInput();
 
-
-
-		// Checking messege from the server
-			if (Recieve_Message != "") {
-				ChatBuffer += Recieve_Message;
-
-				cout << ChatBuffer;
-				cout << '\n';
-
-			}
-
-		}
     }//while (!glfwWindowShouldClose(window))
 
 
@@ -847,6 +835,35 @@ void LoadTerrainAABB(void)
 	return;
 }
 
+void sendInput() {
+	string Send_Message;
+	//string Recieve_Message;
+	string ChatBuffer;
+	vector<string> ConnRooms;
+	// Buffer send
+	Buffer* Send_Buffer = new Buffer(BUFFER_LENGTH);
 
+	// Buffer recieve
+	//Buffer* Recieve_Buffer = new Buffer(BUFFER_LENGTH);
+	if (Conn.isAlive)
+	{
+		//Recieve_Message = Conn.getMessages();
+		//char* RoomName;
+		//RoomName = new char[ARRAY_SIZE];
+		//cMeshObject* player = findObjectByFriendlyName("car");
 
+		Send_Message = "w";
+		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Send_Message);
+
+		// Checking messege from the server
+		//if (Recieve_Message != "") {
+		//	ChatBuffer += Recieve_Message;
+
+		//	cout << ChatBuffer;
+		//	cout << '\n';
+
+		//}
+
+	}
+}
 
