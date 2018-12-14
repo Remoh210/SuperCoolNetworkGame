@@ -825,6 +825,8 @@ void LoadTerrainAABB(void)
 	return;
 }
 
+int msg_ids = 0;
+#include <fstream>
 void sendInput() {
 	string Send_Message;
 	std::string Recieve_Message;
@@ -841,8 +843,9 @@ void sendInput() {
 		//char* RoomName;
 		//RoomName = new char[ARRAY_SIZE];
 		cMeshObject* player = findObjectByFriendlyName("car");
-
-		Send_Message = "w";
+		
+		Send_Message = std::to_string(msg_ids);
+		msg_ids++;
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Send_Message);
 
 		// Checking messege from the server
@@ -853,8 +856,37 @@ void sendInput() {
 			cout << '\n';
 			double temp = ::atof(ChatBuffer.c_str());
 			player->position.z = temp;
+
+			//std::string s = ChatBuffer;
+			//char delimiter = ':';
+
+			//size_t pos = 0;
+			//std::string token; 
+			//std::vector<std::string> tokens;
+			//float received[2];
+			//int index = 0;
+			//std::istringstream tokenStream(s);
+			//while (std::getline(tokenStream, token, delimiter))
+			//{
+				//tokens.push_back(token);
+			//}
+			//while ((pos = s.find(delimiter)) != std::string::npos) {
+			//	token = s.substr(0, pos);
+			//	tokens.push_back(token);
+			//	std::cout << token << std::endl;
+			//	received[index] = std::stof(token);
+			//	index++;
+			//	//s.erase(0, pos + delimiter.length());
+
+			//}
+			//std::cout << s << std::endl;
+
+			//double temp2 = ::atof(tokens[1].c_str());
+			//std::cout << "id: " << tokens[0]<< std::endl;
+			//std::cout << "z pos update: " << tokens[1] << std::endl;
+			//float tempy = std::stof(tokens[1]);
+			//player->position.z = tempy;
 		}
 
 	}
 }
-

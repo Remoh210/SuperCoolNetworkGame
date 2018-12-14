@@ -43,6 +43,8 @@ float yPos = -0.2f;
 float xPos = -1.5f;
 float zPos = -74.0f;
 
+float yRotation = 0.0f;
+
 int main(void)
 {
 	//Winsock
@@ -386,6 +388,7 @@ void sendMsgValue(LPSOCKET_INFORMATION sa, std::string msg, std::string userName
 	sa->WsaBuffer.len = packetLength;
 	sa->GotNewData = 1;
 }
+#include <iostream>
 void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 {
 	Buffer buff(msg.size());
@@ -494,7 +497,44 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 				}
 			}
 		}break;
+		// update z pos
 		case 4:
+		{
+			short msgLenght = buff.ReadInt16LE();
+			std::string msg;
+			for (short index3 = 0; index3 < msgLenght; index3++)
+			{
+				msg.push_back(buff.ReadChar());
+			}
+			std::string buildstring = "";
+			for (unsigned int index = 0; index != msg.size(); index++)
+			{
+					std::cout << msg[index] << std::endl;
+					buildstring += std::to_string(msg[index]);
+			}
+			
+			for (int indA = 0; indA < sa->rooms.size(); indA++)
+			{
+				for (int indB = 0; indB < TotalSockets; indB++)
+				{
+					for (int indC = 0; indC < SocketArray[indB]->rooms.size(); indC++)
+					{
+						if (sa->rooms.at(indA) == SocketArray[indB]->rooms.at(indC) && sa->rooms.at(indA) != "")
+						{
+							zPos += 0.1f;
+							// id+ zpos
+							//std::string sendthis = buildstring + ":" + std::to_string(zPos);
+							// zpos
+							std::string sendthis = std::to_string(zPos);
+							sendMsgValue(SocketArray[indB], sendthis, sa->UserName);
+						}
+					}
+				}
+			}
+		}break;
+
+		// Y rotation input
+		case 5:
 		{
 			short msgLenght = buff.ReadInt16LE();
 			std::string msg;
@@ -511,7 +551,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 					{
 						if (sa->rooms.at(indA) == SocketArray[indB]->rooms.at(indC) && sa->rooms.at(indA) != "")
 						{
-							zPos += 0.1f;
+							yRotation += 0.1f;
 							std::string sendthis = std::to_string(zPos);
 							sendMsgValue(SocketArray[indB], sendthis, sa->UserName);
 						}
