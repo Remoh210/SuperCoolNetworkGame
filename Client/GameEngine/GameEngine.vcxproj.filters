@@ -210,6 +210,9 @@
     <ClCompile Include="networking\ConnectionMaintainer.cpp">
       <Filter>Networking</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="linmath.h">
@@ -318,6 +321,9 @@
       <Filter>Networking</Filter>
     </ClInclude>
     <ClInclude Include="networking\ConnectionMaintainer.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>Networking</Filter>
     </ClInclude>
   </ItemGroup>

@@ -196,6 +196,7 @@
     <ClCompile Include="TextureManager\cBasicTextureManager.cpp" />
     <ClCompile Include="TextureManager\CTextureFromBMP.cpp" />
     <ClCompile Include="theMain.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="UserIO.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +236,7 @@
     <ClInclude Include="TextureManager\C24BitBMPpixel.h" />
     <ClInclude Include="TextureManager\cBasicTextureManager.h" />
     <ClInclude Include="TextureManager\CTextureFromBMP.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\scripts\example.lua" />

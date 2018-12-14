@@ -16,6 +16,8 @@
 #define BUFFER_LENGTH 512  // Default buffer length of our buffer in characters
 #define PORT_NUMBER "5000"  // The default port to listen on
 
+int userNum = 0;
+
 typedef struct _SOCKET_INFORMATION {
 	char Buffer[BUFFER_LENGTH];
 	WSABUF WsaBuffer;
@@ -26,6 +28,7 @@ typedef struct _SOCKET_INFORMATION {
 	std::vector<std::string> rooms;  // Rooms
 	std::string UserName;            // Name
 	bool GotNewData = 0;
+	int id;
 } SOCKET_INFORMATION, *LPSOCKET_INFORMATION;
 
 LPSOCKET_INFORMATION SocketArray[FD_SETSIZE];
@@ -370,11 +373,11 @@ void sendMsg(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string use
 	sa->WsaBuffer.len = packetLength;
 	sa->GotNewData = 1;
 }
-void sendMsgValue(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string userName)
+void sendMsgValue(LPSOCKET_INFORMATION sa, int id, std::string msg, std::string userName)
 {
 	std::string formatedMsg = msg;
 
-	int packetLength = sizeof(INT32) + sizeof(short) + formatedMsg.size();
+	int packetLength = sizeof(INT32) + sizeof(int) + formatedMsg.size();
 
 	Buffer buff(packetLength);
 	buff.WriteInt32LE(packetLength);
@@ -426,6 +429,8 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 				userName.push_back(buff.ReadChar());
 			}
 			sa->UserName = userName + " ";
+			sa->id = userNum;
+			userNum++;
 
 			for (int indA = 0; indA < sa->rooms.size(); indA++)
 			{
@@ -504,6 +509,12 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 		case 4:
 		{
 			short id = buff.ReadInt16LE();
+
+			bool forceCSP = true;
+			// force CSP
+			if (forceCSP) {
+				id++;
+			}
 			short msgLenght = buff.ReadInt16LE();
 			std::string msg;
 			for (short index3 = 0; index3 < msgLenght; index3++)
