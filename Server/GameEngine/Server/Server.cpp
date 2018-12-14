@@ -451,6 +451,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 			}
 		}break;
 
+		// MSG_ID_LEAVE_THE_MESSAGE
 		case 3:
 		{
 			short msgLenght = buff.ReadInt16LE();

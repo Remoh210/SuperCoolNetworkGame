@@ -100,6 +100,9 @@ cLightManager* LightManager = NULL;
 std::vector<cMeshObject*> vec_transObj;
 std::vector<cMeshObject*> vec_non_transObj;
 
+float receiveDelay = 0.01f;
+int counter = 0;
+
 cBasicTextureManager* g_pTheTextureManager = NULL;
 
 static void error_callback(int error, const char* description)
@@ -490,20 +493,7 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 	while (!glfwWindowShouldClose(window))
     {
 
-		if (Conn.isAlive)
-		{
-			Recieve_Message = Conn.getMessages();
 
-			// Checking messege from the server
-			if (Recieve_Message != "") {
-				ChatBuffer += Recieve_Message;
-
-				cout << ChatBuffer;
-				cout << '\n';
-
-			}
-
-		}
 
 		// Switch to the shader we want
 		::pTheShaderManager->useShaderProgram( "BasicUberShader" );
@@ -769,7 +759,7 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 		ProcessAsynKeys(window);
 
 
-		//sendInput();
+
 
     }//while (!glfwWindowShouldClose(window))
 
@@ -837,7 +827,7 @@ void LoadTerrainAABB(void)
 
 void sendInput() {
 	string Send_Message;
-	//string Recieve_Message;
+	string Recieve_Message;
 	string ChatBuffer;
 	vector<string> ConnRooms;
 	// Buffer send
@@ -847,7 +837,7 @@ void sendInput() {
 	//Buffer* Recieve_Buffer = new Buffer(BUFFER_LENGTH);
 	if (Conn.isAlive)
 	{
-		//Recieve_Message = Conn.getMessages();
+		Recieve_Message = Conn.getMessages();
 		//char* RoomName;
 		//RoomName = new char[ARRAY_SIZE];
 		//cMeshObject* player = findObjectByFriendlyName("car");
@@ -856,13 +846,13 @@ void sendInput() {
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Send_Message);
 
 		// Checking messege from the server
-		//if (Recieve_Message != "") {
-		//	ChatBuffer += Recieve_Message;
+		if (Recieve_Message != "") {
+			ChatBuffer += Recieve_Message;
 
-		//	cout << ChatBuffer;
-		//	cout << '\n';
+			cout << ChatBuffer;
+			cout << '\n';
 
-		//}
+		}
 
 	}
 }

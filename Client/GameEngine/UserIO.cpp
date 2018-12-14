@@ -291,7 +291,7 @@ void ProcessAsynKeys(GLFWwindow* window)
 			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 			{
 
-					pPlayer->position.z += 0.1f;
+					//pPlayer->position.z += 0.1f;
 					sendInput();
 					//glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
 
