@@ -366,7 +366,26 @@ void sendMsg(LPSOCKET_INFORMATION sa, std::string msg, std::string userName)
 	sa->WsaBuffer.len = packetLength;
 	sa->GotNewData = 1;
 }
+void sendMsgValue(LPSOCKET_INFORMATION sa, std::string msg, std::string userName)
+{
+	std::string formatedMsg = msg;
 
+	int packetLength = sizeof(INT32) + formatedMsg.size();
+
+	Buffer buff(packetLength);
+	buff.WriteInt32LE(packetLength);
+
+	for (int index2 = 0; index2 < formatedMsg.size(); index2++)
+	{
+		buff.WriteChar(formatedMsg.at(index2));
+	}
+
+	buff.WriteChar('\0');
+
+	sa->WsaBuffer.buf = buff.getBuffer();
+	sa->WsaBuffer.len = packetLength;
+	sa->GotNewData = 1;
+}
 void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 {
 	Buffer buff(msg.size());
@@ -492,9 +511,9 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 					{
 						if (sa->rooms.at(indA) == SocketArray[indB]->rooms.at(indC) && sa->rooms.at(indA) != "")
 						{
-							zPos += 1.0f;
+							zPos += 0.1f;
 							std::string sendthis = std::to_string(zPos);
-							sendMsg(SocketArray[indB], sendthis, sa->UserName);
+							sendMsgValue(SocketArray[indB], sendthis, sa->UserName);
 						}
 					}
 				}

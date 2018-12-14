@@ -827,8 +827,8 @@ void LoadTerrainAABB(void)
 
 void sendInput() {
 	string Send_Message;
-	string Recieve_Message;
-	string ChatBuffer;
+	std::string Recieve_Message;
+	std::string ChatBuffer;
 	vector<string> ConnRooms;
 	// Buffer send
 	Buffer* Send_Buffer = new Buffer(BUFFER_LENGTH);
@@ -840,7 +840,7 @@ void sendInput() {
 		Recieve_Message = Conn.getMessages();
 		//char* RoomName;
 		//RoomName = new char[ARRAY_SIZE];
-		//cMeshObject* player = findObjectByFriendlyName("car");
+		cMeshObject* player = findObjectByFriendlyName("car");
 
 		Send_Message = "w";
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Send_Message);
@@ -851,7 +851,8 @@ void sendInput() {
 
 			cout << ChatBuffer;
 			cout << '\n';
-
+			double temp = ::atof(ChatBuffer.c_str());
+			player->position.z = temp;
 		}
 
 	}
