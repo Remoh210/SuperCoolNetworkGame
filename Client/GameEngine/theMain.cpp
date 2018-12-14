@@ -1,3 +1,4 @@
+#define WIN32_LEAN_AND_MEAN
 //     ___                 ___ _     
 //    / _ \ _ __  ___ _ _ / __| |    
 //   | (_) | '_ \/ -_) ' \ (_ | |__  
@@ -17,23 +18,44 @@
 #include <stdlib.h>
 #include <stdio.h>		// printf();
 #include <iostream>		// cout (console out)
-
 #include <vector>		// "smart array" dynamic array
-
 #include "cShaderManager.h"
 #include "cMeshObject.h"
 #include "cVAOMeshManager.h"
 #include <algorithm>
-
 #include "DebugRenderer/cDebugRenderer.h"
 #include "cLightHelper.h"
+
+//**Network Stuff**//
+
+#include <windows.h>
+#include "networking/ConnectionMaintainer.h"
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+#pragma comment(lib, "Ws2_32.lib")
+#pragma comment(lib, "Mswsock.lib")
+#pragma comment(lib, "AdvApi32.lib")
+#define BUFFER_LENGTH 512
+#define PORT_NUMBER "5000"
+#define SERVER_ADDRESS "127.0.0.1"
+#define ARRAY_SIZE 128  
+
+//**Network Stuff**//
 
 GLuint program;
 cDebugRenderer* g_pDebugRendererACTUAL = NULL;
 iDebugRenderer* g_pDebugRenderer = NULL;
 cLuaBrain* p_LuaScripts = NULL;
 cCommandGroup sceneCommandGroup("SceneCG");
-int cou;
+
+
+
+
+
+
+
+
 std::vector<cAABB::sAABB_Triangle> vec_cur_AABB_tris;
 void UpdateWindowTitle(void);
 double currentTime = 0;
@@ -52,7 +74,6 @@ unsigned int numberOfObjectsToDraw = 0;
 
 const unsigned int SCR_WIDTH = 1000;
 const unsigned int SCR_HEIGHT = 800;
-
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 
 bool distToCam(cMeshObject* leftObj, cMeshObject* rightObj) {
@@ -193,14 +214,7 @@ int main(void)
 	//uniform float lightAtten;
 
 
-//	GLint lightPos_UniLoc = glGetUniformLocation(program, "lightPos");
-//	GLint lightBrightness_UniLoc = glGetUniformLocation(program, "lightBrightness");
 
-	//	// uniform mat4 MVP;	THIS ONE IS NO LONGER USED	
-	//uniform mat4 matModel;	// M
-	//uniform mat4 matView;		// V
-	//uniform mat4 matProj;		// P
-	//GLint mvp_location = glGetUniformLocation(program, "MVP");
 	GLint matModel_location = glGetUniformLocation(program, "matModel");
 	GLint matView_location = glGetUniformLocation(program, "matView");
 	GLint matProj_location = glGetUniformLocation(program, "matProj");
@@ -250,10 +264,7 @@ int main(void)
 	//***************************************************************
 
 	LightManager = new cLightManager();
-	//sLight* pTheOneLight = NULL;
-	//sLight* pTheSecondLight = NULL;
-	//sLight* pTheThirdLight = NULL;
-	//sLight* pTheForthLight = NULL;
+
 
 	{
 		sLight* pTheMainLight = new sLight();
@@ -335,20 +346,14 @@ int main(void)
 		LightManager->LoadUniformLocations(program);
 	}
 
-	//saveLightInfo("Default.txt")
 	cLightHelper* pLightHelper = new cLightHelper();
 
 	
 
-	//Reload from the file
-//	saveModelInfo("Models.txt", vec_pObjectsToDraw);
-//	saveLightInfo("lights.txt", LightManager->vecLights);
-	//loadModels("Models.txt", vec_pObjectsToDraw);
+
 	loadLights("lights.txt", LightManager->vecLights);
 	loadCameraInfo("camera.txt");
-	//HACK; TODO save and load camera look at
-	//camera.b_controlledByScript = true;
-	//camera.SetViewMatrix(glm::lookAt(camera.Position, glm::vec3(285.0f, 245.0f, 825.0f), camera.WorldUp));
+
 	
 
 
@@ -390,6 +395,94 @@ int main(void)
 
 
 	//*****************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+	UserInfo User;
+	std::cout << " \n\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+::::::::::::::::##############                              :::::::::::::::::::" << std::endl << "\
+############################  ##############################  :::::::::::::::::" << std::endl << "\
+#########################  ######???????????????????????######  :::::::::::::::" << std::endl << "\
+=========================  ####??????????()????()?????????####  :::::::::::::::" << std::endl << "\
+=========================  ##????()??????????????    ()?????##  ::::    :::::::" << std::endl << "\
+------------=============  ##??????????????????  ;;;;  ?????##  ::  ;;;;  :::::" << std::endl << "\
+-------------------------  ##??????????()??????  ;;;;;;?????##    ;;;;;;  :::::" << std::endl << "\
+-------------------------  ##??????????????????  ;;;;;;         ;;;;;;;;  :::::" << std::endl << "\
+++++++++++++-------------  ##??????????????????  ;;;;;;;;;;;;;;;;;;;;;;;  :::::" << std::endl << "\
++++++++++++++++++++++++++  ##????????????()??  ;;;;;;;;;;;;;;;;;;;;;;;;;;;  :::" << std::endl << "\
++++++++++++++++++    ;;;;  ##??()????????????  ;;;;;;@@  ;;;;;;;;@@  ;;;;;  :::" << std::endl << "\
+~~~~~~~~~~~~~++++;;;;;;;;  ##????????????????  ;;;;;;    ;;;  ;;;    ;;;;;  :::" << std::endl << "\
+~~~~~~~~~~~~~~~  ;;  ~~~~  ####??????()??????  ;;[];;;;;;;;;;;;;;;;;;;;;[]  :::" << std::endl << "\
+$$$$$$$$$$$$$~~~~  ~~~~~~  ######?????????????  ;;;;;;              ;;;;  :::::" << std::endl << "\
+$$$$$$$$$$$$$$$$$$$$$$$$$    ###################  ;;;;;;;;;;;;;;;;;;;;  :::::::" << std::endl << "\
+$$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::" << std::endl << "\
+:::::::::::::$$$$$$$$$$  ;;;;  ::  ;;  ::::::::::::  ;;  ::  ;;;;  ::::::::::::" << std::endl << "\
+:::::::::::::::::::::::      ::::::    :::::::::::::     ::::      ::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NN::::NN::YY::::YY:::AAAAAA:::NN::::NN:::!!::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NNNN::NN::YY::::YY::AA::::AA::NNNN::NN:::!!::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NNNN::NN::YY::::YY::AA::::AA::NNNN::NN:::!!::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NN::NNNN::::YYYY::::AAAAAAAA::NN::NNNN:::!!::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NN::NNNN:::::YY:::::AA::::AA::NN::NNNN:::::::::::::::::::::::::" << std::endl << "\
+::::::::::::::::NN::::NN:::::YY:::::AA::::AA::NN::::NN:::!!::::::::::::::::::::" << std::endl << "\
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl << "\
+::::::::::::::::::::::::YOU:HAVE:DONE:THE:NYAN:::::::::::::::::::::::::::::::::" << std::endl;
+	std::cout << "Welcome to The Super Cool Racing game";
+	std::cout << "Connecting to the game server\n";
+	std::cout << "Type \"y\" or \"n\": ";
+
+		User.ServerAdress = SERVER_ADDRESS;
+
+
+	std::cout << "Enter your nick name: \n";
+	char FirstName[ARRAY_SIZE];
+	std::cin >> FirstName;
+	User.Name = FirstName;
+
+	// Buffer send
+	Buffer* Send_Buffer = new Buffer(BUFFER_LENGTH);
+
+	// Buffer recieve
+	Buffer* Recieve_Buffer = new Buffer(BUFFER_LENGTH);
+
+	ConnectionMaintainer Conn;
+	Conn.Connect(User);
+
+
+	if (Conn.isAlive) {
+		cout << "You appear to be connected!\n";
+		Sleep(3000);
+	}
+	else {
+		cout << "Looks like the server is down, no luck this time.\n";
+		Sleep(3000);
+	}
+
+
+	string Send_Message;
+	string Recieve_Message;
+	string ChatBuffer;
+	vector<string> ConnRooms;
+
+
+
+
+
+
 	
 	// Draw the "scene" (run the program)
 	while (!glfwWindowShouldClose(window))
@@ -516,40 +609,6 @@ int main(void)
 
 		}//for ( unsigned int objIndex = 0; 
 
-
-
-
-
-		//REFLECTION
-
-		//{
-		//	GLint bAddReflect_UniLoc = glGetUniformLocation(program, "bAddReflect");
-		//	//			glUniform1f( bAddReflect_UniLoc, (float)GL_TRUE );
-
-		//	GLint bAddRefract_UniLoc = glGetUniformLocation(program, "bAddRefract");
-		//	glUniform1f(bAddRefract_UniLoc, (float)GL_TRUE);
-
-		//	cMeshObject* pBunny = findObjectByFriendlyName("Ufo2UVb");
-
-		//	glm::vec3 oldPos = pBunny->position;
-		//	glm::vec3 oldScale = pBunny->nonUniformScale;
-		//	glm::quat oldOrientation = pBunny->getQOrientation();
-
-		//	pBunny->position = glm::vec3(0.0f, 25.0f, 0.0f);
-		//	pBunny->setUniformScale(100.0f);
-		//	pBunny->setMeshOrientationEulerAngles(0.0f, 0.0f, 0.0f, true);
-
-		//	glm::mat4x4 matModel = glm::mat4(1.0f);			// mat4x4 m, p, mvp;
-
-		//	DrawObject(pBunny, matModel, program);
-
-		//	pBunny->position = oldPos;
-		//	pBunny->nonUniformScale = oldScale;
-		//	pBunny->setQOrientation(oldOrientation);
-
-		//	glUniform1f(bAddReflect_UniLoc, (float)GL_FALSE);
-		//	glUniform1f(bAddRefract_UniLoc, (float)GL_FALSE);
-		//}
 
 
 
@@ -727,9 +786,6 @@ cMeshObject* findObjectByFriendlyName(std::string theNameToFind)
 {
 	for ( unsigned int index = 0; index != vec_pObjectsToDraw.size(); index++ )
 	{
-		// Is this it? 500K - 1M
-		// CPU limited Memory delay = 0
-		// CPU over powered (x100 x1000) Memory is REAAAAALLY SLOW
 		if ( vec_pObjectsToDraw[index]->friendlyName == theNameToFind )
 		{
 			return vec_pObjectsToDraw[index];
@@ -751,150 +807,13 @@ cMeshObject* findObjectByUniqueID(unsigned int ID_to_find)
 		}
 	}
 
-	// Didn't find it.
+
 	return NULL;	// 0 or nullptr
 }
 
 
 void LoadTerrainAABB(void)
 {
-	// *******
-	// This REALLY should be inside the cAABBHierarchy, likely... 
-	// *******
-
-
-	// Read the graphics mesh object, and load the triangle info
-	//	into the AABB thing.
-	// Where is the mesh (do the triangles need to be transformed)??
-
-//	cMeshObject* pTerrain = findObjectByFriendlyName("terrain");
-
-//	sModelDrawInfo terrainMeshInfo;
-//	terrainMeshInfo.meshFileName = pTerrain->meshName;
-
-//	::g_pTheVAOMeshManager->FindDrawInfoByModelName(terrainMeshInfo);
-
-
-	//// How big is our AABBs? Side length?
-	//float sideLength = 50.0f;		// Play with this lenght
-	//								// Smaller --> more AABBs, fewer triangles per AABB
-	//								// Larger --> More triangles per AABB	
-
-	//for (unsigned int triIndex = 0; triIndex != terrainMeshInfo.numberOfTriangles; triIndex++)
-	//{
-	//	// for each triangle, for each vertex, determine which AABB the triangle should be in
-	//	// (if your mesh has been transformed, then you need to transform the tirangles 
-	//	//  BEFORE you do this... or just keep the terrain UNTRANSFORMED)
-
-	//	sPlyTriangle currentTri = terrainMeshInfo.pTriangles[triIndex];
-	//	
-
-	//	sPlyVertex currentVerts[3];
-	//	currentVerts[0] = terrainMeshInfo.pVerticesFromFile[currentTri.vertex_index_1];
-	//	currentVerts[1] = terrainMeshInfo.pVerticesFromFile[currentTri.vertex_index_2];
-	//	currentVerts[2] = terrainMeshInfo.pVerticesFromFile[currentTri.vertex_index_3];
-
-	//	// This is the structure we are eventually going to store in the AABB map...
-	//	cAABB::sAABB_Triangle curAABBTri;
-	//	curAABBTri.verts[0].x = currentVerts[0].x;
-	//	curAABBTri.verts[0].y = currentVerts[0].y;
-	//	curAABBTri.verts[0].z = currentVerts[0].z;
-	//	curAABBTri.verts[1].x = currentVerts[1].x;
-	//	curAABBTri.verts[1].y = currentVerts[1].y;
-	//	curAABBTri.verts[1].z = currentVerts[1].z;
-	//	curAABBTri.verts[2].x = currentVerts[2].x;
-	//	curAABBTri.verts[2].y = currentVerts[2].y;
-	//	curAABBTri.verts[2].z = currentVerts[2].z;
-
-	//	// Is the triangle "too big", and if so, split it (take centre and make 3 more)
-	//	// (Pro Tip: "too big" is the SMALLEST side is greater than HALF the AABB length)
-	//	// Use THOSE triangles as the test (and recursively do this if needed),
-	//	// +++BUT+++ store the ORIGINAL triangle info NOT the subdivided one
-	//	// 
-	//	// For the student to complete... 
-	//	// 
-
-
-	//	for (unsigned int vertIndex = 0; vertIndex != 3; vertIndex++)
-	//	{
-	//		// What AABB is "this" vertex in? 
-	//		unsigned long long AABB_ID =
-	//			cAABB::generateID(curAABBTri.verts[0],
-	//				sideLength);
-
-	//		// Do we have this AABB alredy? 
-	//		std::map< unsigned long long/*ID AABB*/, cAABB* >::iterator itAABB
-	//			= ::g_pTheTerrain->m_mapAABBs.find(AABB_ID);
-
-	//		if (itAABB == ::g_pTheTerrain->m_mapAABBs.end())
-	//		{
-	//			// We DON'T have an AABB, yet
-
-
-
-	//			std::cout << cou++ << std::endl;
-
-
-
-	//			cAABB* pAABB = new cAABB();
-	//			// Determine the AABB location for this point
-	//			// (like the generateID() method...)
-	//			glm::vec3 minXYZ = curAABBTri.verts[0];
-	//			minXYZ.x = (floor(minXYZ.x / sideLength)) * sideLength;
-	//			minXYZ.y = (floor(minXYZ.y / sideLength)) * sideLength;
-	//			minXYZ.z = (floor(minXYZ.z / sideLength)) * sideLength;
-
-	//			//pAABB->setMinXYZ(minXYZ);
-	//			//pAABB->setSideLegth(sideLength);
-
-	//			pAABB->setCenter(minXYZ + sideLength / 2);
-	//			pAABB->setHalfLegth(sideLength/2);
-
-	//			// Note: this is the SAME as the AABB_ID...
-	//			unsigned long long the_AABB_ID = pAABB->getID();
-
-	//			::g_pTheTerrain->m_mapAABBs[the_AABB_ID] = pAABB;
-
-	//			// Then set the iterator to the AABB, by running find again
-	//			itAABB = ::g_pTheTerrain->m_mapAABBs.find(the_AABB_ID);
-
-
-
-	//			//cMeshObject* pCubeForBallsToBounceIn = new cMeshObject();
-	//			//
-	//			//pCubeForBallsToBounceIn->setDiffuseColour(glm::vec3(0.0f, 1.0f, 0.0f));
-	//			//pCubeForBallsToBounceIn->bDontLight = true;
-	//			//pCubeForBallsToBounceIn->position = pAABB->getCentre();
-	//			//pCubeForBallsToBounceIn->friendlyName = "CubeBallsBounceIn";
-	//			//pCubeForBallsToBounceIn->meshName = "cube_flat_shaded_xyz_n_uv.ply";		// "cube_flat_shaded_xyz.ply";
-	//			//pCubeForBallsToBounceIn->setUniformScale(sideLength);
-	//			//pCubeForBallsToBounceIn->bIsWireFrame = true;
-	//			// Cube is 2x2x2, so with a scale of 100x means it's
-	//			//	200x200x200, centred around the origin (0,0,0)
-	//			// The GROUND_PLANE_Y = -3.0f, so place it +97.0 lines up the 'bottom'
-	//			//pCubeForBallsToBounceIn->position = glm::vec3(0.0f, 97.0f, 0.0f);
-	//			//pCubeForBallsToBounceIn->bIsWireFrame = true;
-
-	//		//	pCubeForBallsToBounceIn->pDebugRenderer = ::g_pDebugRenderer;
-
-	//			//pTerrain->nonUniformScale = glm::vec3(0.1f,0.1f,0.1f);
-	//			//vec_pObjectsToDraw.push_back(pCubeForBallsToBounceIn);
-
-
-	//		}//if( itAABB == ::g_pTheTerrain->m_mapAABBs.end() )
-
-	//		// At this point, the itAABB ++IS++ pointing to an AABB
-	//		// (either there WAS one already, or I just created on)
-
-	//		itAABB->second->vecTriangles.push_back(curAABBTri);
-
-	//	}//for ( unsigned int vertIndex = 0;
-
-	//}//for ( unsigned int triIndex
-
-
-
-	// At runtime, need a "get the triangles" method...
 
 	return;
 }

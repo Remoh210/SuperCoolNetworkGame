@@ -82,6 +82,9 @@
     <Filter Include="Scripting\cCommands\Follow\FollowCurve">
       <UniqueIdentifier>{f3ca4672-a0a3-4355-bbbe-3aca8929a011}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{b41bf495-15e0-4def-a64d-fe6ae25175e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -201,6 +204,12 @@
     <ClCompile Include="cFollowCurve.cpp">
       <Filter>Scripting\cCommands\Follow\FollowCurve</Filter>
     </ClCompile>
+    <ClCompile Include="networking\Buffer.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="networking\ConnectionMaintainer.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="linmath.h">
@@ -304,6 +313,12 @@
     </ClInclude>
     <ClInclude Include="cFollowCurve.h">
       <Filter>Scripting\cCommands\Follow\FollowCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="networking\Buffer.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="networking\ConnectionMaintainer.h">
+      <Filter>Networking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

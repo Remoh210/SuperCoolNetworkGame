@@ -180,6 +180,8 @@
     <ClCompile Include="Error\COpenGLError.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="LoadModels.cpp" />
+    <ClCompile Include="networking\Buffer.cpp" />
+    <ClCompile Include="networking\ConnectionMaintainer.cpp" />
     <ClCompile Include="ObjectTest.cpp" />
     <ClCompile Include="OpenGLMeshLoader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -223,6 +225,8 @@
     <ClInclude Include="globalStuff.h" />
     <ClInclude Include="iCommand.h" />
     <ClInclude Include="linmath.h" />
+    <ClInclude Include="networking\Buffer.h" />
+    <ClInclude Include="networking\ConnectionMaintainer.h" />
     <ClInclude Include="sModelDrawInfo.h" />
     <ClInclude Include="SmoothStep.h" />
     <ClInclude Include="sNVPair.h" />
