@@ -478,9 +478,14 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 	string ChatBuffer;
 	vector<string> ConnRooms;
 
-
-
-
+	if (Conn.isAlive) {
+		//char* RoomName;
+		//RoomName = new char[ARRAY_SIZE];
+		string RoomName = "main";
+		User.Room = (char*)RoomName.c_str();
+		ConnRooms.push_back(User.Room);
+		Conn.sendMessage(Send_Buffer, User, MSG_ID_JOIN_ROOM, Send_Message);
+	}
 
 
 	
