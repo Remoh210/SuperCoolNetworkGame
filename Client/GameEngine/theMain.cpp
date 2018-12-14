@@ -443,9 +443,8 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 ::::::::::::::::::::::::YOU:HAVE:DONE:THE:NYAN:::::::::::::::::::::::::::::::::" << std::endl;
 	std::cout << "Welcome to The Super Cool Racing game";
 	std::cout << "Connecting to the game server\n";
-	std::cout << "Type \"y\" or \"n\": ";
 
-		User.ServerAdress = SERVER_ADDRESS;
+	User.ServerAdress = SERVER_ADDRESS;
 
 
 	std::cout << "Enter your nick name: \n";
@@ -465,7 +464,7 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 
 	if (Conn.isAlive) {
 		cout << "You appear to be connected!\n";
-		Sleep(3000);
+		//Sleep(3000);
 	}
 	else {
 		cout << "Looks like the server is down, no luck this time.\n";
@@ -479,10 +478,15 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 	vector<string> ConnRooms;
 
 	if (Conn.isAlive) {
+
+		std::cout << "Enter Room Name \n";
+		char room[ARRAY_SIZE];
+		std::cin >> room;
+		User.Room = room;
 		//char* RoomName;
 		//RoomName = new char[ARRAY_SIZE];
-		string RoomName = "main";
-		User.Room = (char*)RoomName.c_str();
+		//string RoomName = "main";
+		//User.Room = (char*)RoomName.c_str();
 		ConnRooms.push_back(User.Room);
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_JOIN_ROOM, Send_Message);
 	}
@@ -757,8 +761,28 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 		ProcessAsynKeys(window);
 
 
+		if (Conn.isAlive) 
+		{
+			Recieve_Message = Conn.getMessages();
+			//char* RoomName;
+			//RoomName = new char[ARRAY_SIZE];
+			cMeshObject* player = findObjectByFriendlyName("car");
+			Send_Message = to_string(player->position.x) + " " + to_string(player->position.y) + " " + to_string(player->position.z);
+			Conn.sendMessage(Send_Buffer, User, MSG_ID_LEAVE_THE_MESSAGE, Send_Message);
+		
 
 
+
+		// Checking messege from the server
+			if (Recieve_Message != "") {
+				ChatBuffer += Recieve_Message;
+
+				cout << ChatBuffer;
+				cout << '\n';
+
+			}
+
+		}
     }//while (!glfwWindowShouldClose(window))
 
 
