@@ -235,20 +235,11 @@ string ConnectionMaintainer::getMessages() {
 				bytesInBuffer--;
 			}
 			else {
-<<<<<<< HEAD
-
-=======
-				
->>>>>>> b843bc6d104cc6b8cbc02cba1f8bfccecf2360f7
 				// data for the prefix length
 				packetLength = buff.ReadInt32LE();
 				int id = buff.ReadInt16LE();
 				std::cout << "id: " << id << std::endl;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> b843bc6d104cc6b8cbc02cba1f8bfccecf2360f7
 				// get current id of this msg
 				if (got_current_msg_id == false) {
 					got_current_msg_id = true;
@@ -281,21 +272,12 @@ string ConnectionMaintainer::getMessages() {
 }
 
 int ConnectionMaintainer::giveMsgID() {
-<<<<<<< HEAD
-=======
-
->>>>>>> b843bc6d104cc6b8cbc02cba1f8bfccecf2360f7
 	if (this->msg_ids == 127) {
 		this->msg_ids = 0;
 	}
 	else {
 		this->msg_ids++;
 	}
-<<<<<<< HEAD
-
-=======
-	
->>>>>>> b843bc6d104cc6b8cbc02cba1f8bfccecf2360f7
 	this->last_sent_msg_id = this->msg_ids;
 	std::cout << "setting msg: " << this->msg_ids << std::endl;
 	return msg_ids;
