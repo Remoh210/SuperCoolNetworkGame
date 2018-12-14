@@ -128,6 +128,8 @@ UserInfo User;
 
 Player players[4];
 
+int playerID = 0;
+
 int main(void)
 {
 	GLFWwindow* window;
@@ -152,7 +154,7 @@ int main(void)
 	//CAMERA SPEED
 	camera.MovementSpeed = 1000.0f;
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
@@ -249,6 +251,11 @@ int main(void)
 	LoadModelTypes(::g_pTheVAOMeshManager, program);
 	CreateModels("Models.txt", ::g_pTheVAOMeshManager, program);
 	LoadModelsIntoScene(::vec_pObjectsToDraw);
+
+	players[0].obj = findObjectByFriendlyName("car");
+	players[1].obj = findObjectByFriendlyName("car1");
+	players[2].obj = findObjectByFriendlyName("car2");
+	players[3].obj = findObjectByFriendlyName("car3");
 
 	//vec_sorted_drawObj = vec_pObjectsToDraw;
 
@@ -845,7 +852,7 @@ void sendInput() {
 		Recieve_Message = Conn.getMessages();
 		//char* RoomName;
 		//RoomName = new char[ARRAY_SIZE];
-		cMeshObject* player = findObjectByFriendlyName("car");
+		cMeshObject* player = players[playerID].obj;//findObjectByFriendlyName("car");
 		
 		//Send_Message = std::to_string(msg_ids);
 		Send_Message = "w";
@@ -862,11 +869,33 @@ void sendInput() {
 
 			ChatBuffer += Recieve_Message;
 
-			cout << ChatBuffer;
-			cout << '\n';
-			double temp = ::atof(ChatBuffer.c_str());
-			player->position.z = temp;
-
+			if (Recieve_Message == "Server->JoinAs0")
+			{
+				playerID = 0;
+				cout << "PlayerID: " << playerID << std::endl;
+			}
+			else if (Recieve_Message == "Server->JoinAs1")
+			{
+				playerID = 1;
+				cout << "PlayerID: " << playerID << std::endl;
+			}
+			else if (Recieve_Message == "Server->JoinAs2")
+			{
+				playerID = 2;
+				cout << "PlayerID: " << playerID << std::endl;
+			}
+			else if (Recieve_Message == "Server->JoinAs3")
+			{
+				playerID = 3;
+				cout << "PlayerID: " << playerID << std::endl;
+			}
+			else
+			{
+				cout << ChatBuffer;
+				cout << '\n';
+				double temp = ::atof(ChatBuffer.c_str());
+				player->position.z = temp;
+			}
 			//std::string s = ChatBuffer;
 			//char delimiter = ':';
 
