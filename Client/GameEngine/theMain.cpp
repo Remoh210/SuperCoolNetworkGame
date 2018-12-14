@@ -495,9 +495,40 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 		//string RoomName = "main";
 		//User.Room = (char*)RoomName.c_str();
 		ConnRooms.push_back(User.Room);
+		Recieve_Message = Conn.getMessages();
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_JOIN_ROOM, 0, Send_Message);
-	}
+		cMeshObject* player = players[playerID].obj;//findObjectByFriendlyName("car");
 
+		if (Recieve_Message != "") {
+
+			ChatBuffer += Recieve_Message;
+
+			if (Recieve_Message == "Server->JoinAs0")
+			{
+				playerID = 0;
+				Conn.playerID = 0;
+				cout << "PlayerID: " << playerID << std::endl;
+			}
+			else if (Recieve_Message == "Server->JoinAs1")
+			{
+				playerID = 1;
+				Conn.playerID = 1;
+				cout << "PlayerID: " << playerID << std::endl;
+			}
+			else if (Recieve_Message == "Server->JoinAs2")
+			{
+				playerID = 2;
+				Conn.playerID = 2;
+				cout << "PlayerID: " << playerID << std::endl;
+			}
+			else if (Recieve_Message == "Server->JoinAs3")
+			{
+				playerID = 3;
+				Conn.playerID = 3;
+				cout << "PlayerID: " << playerID << std::endl;
+			}
+		}
+	}
 
 	
 	// Draw the "scene" (run the program)
