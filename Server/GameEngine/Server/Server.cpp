@@ -7,6 +7,7 @@
 #include <ws2tcpip.h>
 #include <vector>
 
+#include "../cMeshObject.h"
 #include "Buffer.h"
 
 // Need to link with Ws2_32.lib
@@ -27,6 +28,7 @@ typedef struct _SOCKET_INFORMATION {
 	DWORD BytesRECV;
 	std::vector<std::string> rooms;  // Rooms
 	std::string UserName;            // Name
+	cMeshObject * obj;
 	bool GotNewData = 0;
 	int id;
 } SOCKET_INFORMATION, *LPSOCKET_INFORMATION;
@@ -440,11 +442,15 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 					{
 						if (roomName == SocketArray[indB]->rooms.at(indC) && SocketArray[indB]->rooms.at(indC) != "")
 						{
-							sendMsg(SocketArray[indB], 0, userName + " has connected to " + roomName, "Server");
+							sendMsg(SocketArray[indB], 0, "JoinAs" + std::to_string(sa->id), "Server");
+							//sendMsg(SocketArray[indB], 0, userName + " has connected to " + roomName, "Server");
 						}
 					}
 				}
 			}
+
+			sa->obj = new cMeshObject();
+			sa->obj->position = glm::vec3(xPos, yPos, zPos);
 
 		}break;
 
@@ -509,7 +515,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 		case 4:
 		{
 			short id = buff.ReadInt16LE();
-			bool forceCSP = true;
+			bool forceCSP = false;
 			// force CSP
 			if (forceCSP) {
 				id++;
@@ -535,11 +541,12 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 					{
 						if (sa->rooms.at(indA) == SocketArray[indB]->rooms.at(indC) && sa->rooms.at(indA) != "")
 						{
-							zPos += 0.1f;
+							sa->obj->position.z += 0.1f;
+							//zPos += 0.1f;
 							// id+ zpos
 							//std::string sendthis = buildstring + ":" + std::to_string(zPos);
 							// zpos
-							std::string sendthis = std::to_string(zPos);
+							std::string sendthis = std::to_string(sa->obj->position.z);
 							sendMsgValue(SocketArray[indB], id, sendthis, sa->UserName);
 						}
 					}
