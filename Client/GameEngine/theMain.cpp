@@ -825,7 +825,6 @@ void LoadTerrainAABB(void)
 	return;
 }
 
-short msg_ids = 0;
 #include <fstream>
 void sendInput() {
 	string Send_Message;
@@ -847,12 +846,16 @@ void sendInput() {
 		//Send_Message = std::to_string(msg_ids);
 		Send_Message = "w";
 		
-		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, msg_ids, Send_Message);
+		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Conn.giveMsgID(), Send_Message);
 		
-		msg_ids++;
 		
 		// Checking messege from the server
-		if (Recieve_Message != "") {
+		std::cout << "print msg:" << std::endl;
+		
+		if (Recieve_Message == "CSP") {
+			std::cout << " do CSP";
+			player->position.z = 0.01;
+		}else if (Recieve_Message != "") {
 			ChatBuffer += Recieve_Message;
 
 			cout << ChatBuffer;

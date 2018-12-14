@@ -370,11 +370,11 @@ void sendMsg(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string use
 	sa->WsaBuffer.len = packetLength;
 	sa->GotNewData = 1;
 }
-void sendMsgValue(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string userName)
+void sendMsgValue(LPSOCKET_INFORMATION sa, int id, std::string msg, std::string userName)
 {
 	std::string formatedMsg = msg;
 
-	int packetLength = sizeof(INT32) + sizeof(short) + formatedMsg.size();
+	int packetLength = sizeof(INT32) + sizeof(int) + formatedMsg.size();
 
 	Buffer buff(packetLength);
 	buff.WriteInt32LE(packetLength);
@@ -504,6 +504,12 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 		case 4:
 		{
 			short id = buff.ReadInt16LE();
+			
+			bool forceCSP = true;
+			// force CSP
+			if (forceCSP) {
+				id++;
+			}
 			short msgLenght = buff.ReadInt16LE();
 			std::string msg;
 			for (short index3 = 0; index3 < msgLenght; index3++)

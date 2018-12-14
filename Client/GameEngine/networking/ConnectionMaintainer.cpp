@@ -1,6 +1,11 @@
 #include "ConnectionMaintainer.h"
 
-ConnectionMaintainer::ConnectionMaintainer() {}
+ConnectionMaintainer::ConnectionMaintainer() {
+	this->msg_ids = 0;
+	this->last_sent_msg_id = 0;
+	this->last_received_msg_id = 0;
+}
+
 
 ConnectionMaintainer::~ConnectionMaintainer() {}
 
@@ -191,6 +196,8 @@ void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msg
 string ConnectionMaintainer::getMessages() {
 	// Setting time interval
 
+	bool got_current_msg_id = false;
+	std::cout << "Getting messages: " << std::endl;
 	timeval* mTime = new timeval[1];
 	mTime->tv_sec = 1;
 	mTime->tv_usec = 0;
@@ -228,10 +235,22 @@ string ConnectionMaintainer::getMessages() {
 				bytesInBuffer--;
 			}
 			else {
+				
 				// data for the prefix length
 				packetLength = buff.ReadInt32LE();
-				short id = buff.ReadInt16LE();
+				int id = buff.ReadInt16LE();
 				std::cout << "id: " << id << std::endl;
+
+
+				// get current id of this msg
+				if (got_current_msg_id == false) {
+					got_current_msg_id = true;
+					if (id != this->last_sent_msg_id) {
+						std::cout << "id out of order... update with CSP" << std::endl;
+						return "CSP";
+					}
+				}
+
 				// Read
 				if (packetLength <= bytesInBuffer && packetLength != 0) {
 					for (int i = 0; i < packetLength - 4; i++) {
@@ -252,4 +271,18 @@ string ConnectionMaintainer::getMessages() {
 
 	// Return an empty string
 	return "";
+}
+
+int ConnectionMaintainer::giveMsgID() {
+
+	if (this->msg_ids == 127) {
+		this->msg_ids = 0;
+	}
+	else {
+		this->msg_ids++;
+	}
+	
+	this->last_sent_msg_id = this->msg_ids;
+	std::cout << "setting msg: " << this->msg_ids << std::endl;
+	return msg_ids;
 }
