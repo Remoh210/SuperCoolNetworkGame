@@ -509,7 +509,11 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 		case 4:
 		{
 			short id = buff.ReadInt16LE();
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> b843bc6d104cc6b8cbc02cba1f8bfccecf2360f7
 			bool forceCSP = true;
 			// force CSP
 			if (forceCSP) {

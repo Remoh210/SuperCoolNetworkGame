@@ -851,6 +851,7 @@ void sendInput() {
 		Send_Message = "w";
 		
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Conn.giveMsgID(), Send_Message);
+<<<<<<< HEAD
 		
 		std::cout << "print msg:" << std::endl;
 
@@ -859,6 +860,17 @@ void sendInput() {
 			player->position.z = 0.01;
 		}
 		else if (Recieve_Message != "") {
+=======
+		
+		
+		// Checking messege from the server
+		std::cout << "print msg:" << std::endl;
+		
+		if (Recieve_Message == "CSP") {
+			std::cout << " do CSP";
+			player->position.z = 0.01;
+		}else if (Recieve_Message != "") {
+>>>>>>> b843bc6d104cc6b8cbc02cba1f8bfccecf2360f7
 			ChatBuffer += Recieve_Message;
 
 			cout << ChatBuffer;
