@@ -885,6 +885,7 @@ void sendInput() {
 		//RoomName = new char[ARRAY_SIZE];
 		//playerID = Conn.playerPackageID;
 		int currentID = Conn.playerPackageID;
+		std::cout << "current id " << Conn.playerPackageID << std::endl;
 		cMeshObject* player = players[currentID].obj;//findObjectByFriendlyName("car");
 		
 		//Send_Message = std::to_string(msg_ids);
