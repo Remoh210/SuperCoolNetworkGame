@@ -739,19 +739,19 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 
 			if (isDead[0])
 			{
-				players[0].obj->position -= players[0].obj->step;
+				players[0].obj->position += players[0].obj->step;
 			}
 			if (isDead[1])
 			{
-				players[1].obj->position -= players[1].obj->step;
+				players[1].obj->position += players[1].obj->step;
 			}
 			if (isDead[2])
 			{
-				players[2].obj->position -= players[2].obj->step;
+				players[2].obj->position += players[2].obj->step;
 			}
 			if (isDead[3])
 			{
-				players[3].obj->position -= players[3].obj->step;
+				players[3].obj->position += players[3].obj->step;
 			}
 		}
 
