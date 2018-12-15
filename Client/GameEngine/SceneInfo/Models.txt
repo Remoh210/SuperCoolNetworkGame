@@ -109,3 +109,14 @@ IsWireFrame  0
 Textures: 1
 Texture0_name tireTex.bmp
 Texture0_strength 1
+Friendly_Name carCSP
+Mesh_Name car.ply
+Position 4.2 1.5 -73.5999
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures:  0

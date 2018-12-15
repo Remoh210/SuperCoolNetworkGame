@@ -10,13 +10,14 @@
 #include "../cMeshObject.h"
 #include "Buffer.h"
 
+
 // Need to link with Ws2_32.lib
 #pragma comment(lib, "Ws2_32.lib")
 
 // #pragma comment (lib, "Mswsock.lib")
 #define BUFFER_LENGTH 512  // Default buffer length of our buffer in characters
 #define PORT_NUMBER "5000"  // The default port to listen on
-
+bool forceCSP = false;
 int userNum = 0;
 
 typedef struct _SOCKET_INFORMATION {
@@ -531,7 +532,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 
 			short msgid = buff.ReadInt16LE();
 
-			bool forceCSP = true;
+
 			// force CSP
 			if (forceCSP) {
 				msgid = 1000;
