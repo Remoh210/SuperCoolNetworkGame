@@ -53,6 +53,11 @@ void key_callback( GLFWwindow* window,
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
 
+	if (key == GLFW_KEY_U && action == GLFW_PRESS)
+	{
+		deadEnabled = !deadEnabled;
+	}
+
 	if (glfwGetKey(window, GLFW_KEY_SLASH))
 	{
 

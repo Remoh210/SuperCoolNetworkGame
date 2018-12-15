@@ -59,6 +59,8 @@ extern std::vector< cMeshObject* > vec_pObjectsToDraw;
 // search for them using the findObjectBy...() 
 // functions.
 extern cMeshObject* g_pRogerRabbit;
+
+extern bool deadEnabled;
 // 
 
 // Signature for the ply loader function

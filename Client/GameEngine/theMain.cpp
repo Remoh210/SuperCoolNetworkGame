@@ -128,10 +128,16 @@ UserInfo User;
 
 Player players[4];
 
-
+bool deadEnabled = false;
 
 
 int playerID = 0;
+
+float deadTime0 = 0.0f;
+float deadTime1 = 0.0f;
+float deadTime2 = 0.0f;
+float deadTime3 = 0.0f;
+bool isDead[4] = { false };
 
 int main(void)
 {
@@ -702,7 +708,51 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 
 		//sceneCommandGroup.Update(deltaTime);
 		
+		if (deadEnabled)
+		{
 
+			deadTime0 += deltaTime;
+			deadTime1 += deltaTime;
+			deadTime2 += deltaTime;
+			deadTime3 += deltaTime;
+			if (deadTime0 > (1.0f * 1 / 60))
+			{
+				isDead[0] = true;
+				deadTime0 = 0.0f;
+			}
+			if (deadTime1 > (1.0f * 1 / 60))
+			{
+				isDead[1] = true;
+				deadTime1 = 0.0f;
+			}
+			if (deadTime2 > (1.0f * 1 / 60))
+			{
+				isDead[2] = true;
+				deadTime2 = 0.0f;
+			}
+			if (deadTime3 > (1.0f * 1 / 60))
+			{
+				isDead[3] = true;
+				deadTime3 = 0.0f;
+			}
+
+			if (isDead[0])
+			{
+				players[0].obj->position -= players[0].obj->step;
+			}
+			if (isDead[1])
+			{
+				players[1].obj->position -= players[1].obj->step;
+			}
+			if (isDead[2])
+			{
+				players[2].obj->position -= players[2].obj->step;
+			}
+			if (isDead[3])
+			{
+				players[3].obj->position -= players[3].obj->step;
+			}
+		}
 
 		// Call the debug renderer call
 //#ifdef _DEBUG
@@ -957,11 +1007,15 @@ void sendInput() {
 			
 		}else if (Recieve_Message != "") {
 
+			isDead[currentID] = false;
+
 			ChatBuffer += Recieve_Message;
 				cout << ChatBuffer;
 				cout << '\n';
 				double temp = ::atof(ChatBuffer.c_str());
+				player->prevPosition = player->position;
 				player->position.z = temp;
+				player->step = player->position - player->prevPosition;
 
 				lastUpdate = temp - player->position.z;
 
