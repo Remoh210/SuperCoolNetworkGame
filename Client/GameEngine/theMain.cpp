@@ -128,6 +128,9 @@ UserInfo User;
 
 Player players[4];
 
+
+
+
 int playerID = 0;
 
 int main(void)
@@ -256,6 +259,12 @@ int main(void)
 	players[1].obj = findObjectByFriendlyName("car1");
 	players[2].obj = findObjectByFriendlyName("car2");
 	players[3].obj = findObjectByFriendlyName("car3");
+
+	players[0].obj->position.z = -73.5999;
+	players[1].obj->position.z = -73.5999;
+	players[2].obj->position.z = -73.5999;
+	players[3].obj->position.z = -73.5999;
+
 
 	//vec_sorted_drawObj = vec_pObjectsToDraw;
 
@@ -471,7 +480,7 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 		Recieve_Message = Conn.getMessages();
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_JOIN_ROOM, 0, Send_Message);
 		cMeshObject* player = players[playerID].obj;//findObjectByFriendlyName("car");
-
+		player->position.z = -73.5999;
 		if (Recieve_Message != "") {
 
 			ChatBuffer += Recieve_Message;
@@ -871,6 +880,8 @@ void LoadTerrainAABB(void)
 	return;
 }
 
+bool runthisOnce = true;
+float lastUpdate =0.1f;
 #include <fstream>
 void sendInput() {
 	string Send_Message;
@@ -889,7 +900,7 @@ void sendInput() {
 		//RoomName = new char[ARRAY_SIZE];
 		//playerID = Conn.playerPackageID;		
 		//Send_Message = std::to_string(msg_ids);
-		Send_Message = "w";
+		Send_Message = Conn.msg_ids;
 		
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Conn.giveMsgID(), Send_Message);
 		
@@ -930,10 +941,20 @@ void sendInput() {
 		// cam try end
 		// Checking messege from the server
 		std::cout << "print msg:" << std::endl;
-		
+		std::cout << "player z pos: " << player->position.z << std::endl;
 		if (Recieve_Message == "CSP") {
 			std::cout << " do CSP";
-			player->position.z = 0.01;
+			double temp = player->position.z;
+			if (runthisOnce == true) {
+				player->position.z = -73.5999 + 0.1f;
+			}
+			else {
+
+				player->position.z = temp+ lastUpdate;
+			}
+			runthisOnce = false;
+			std::cout << "player z pos 2: " << player->position.z << std::endl;
+			
 		}else if (Recieve_Message != "") {
 
 			ChatBuffer += Recieve_Message;
@@ -941,6 +962,9 @@ void sendInput() {
 				cout << '\n';
 				double temp = ::atof(ChatBuffer.c_str());
 				player->position.z = temp;
+
+				lastUpdate = temp - player->position.z;
+
 			//std::string s = ChatBuffer;
 			//char delimiter = ':';
 
@@ -970,6 +994,11 @@ void sendInput() {
 			//std::cout << "z pos update: " << tokens[1] << std::endl;
 			//float tempy = std::stof(tokens[1]);
 			//player->position.z = tempy;
+		}
+		
+		std::cout << "last update: " << lastUpdate << std::endl;
+		if (lastUpdate < 0.1f) {
+			lastUpdate = 0.1f;
 		}
 
 	}

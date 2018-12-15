@@ -147,7 +147,7 @@ void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msg
 		// Message lenght
 		short msgLenght = message.size();
 
-		packetLenght = sizeof(int) + sizeof(char) + sizeof(short) + sizeof(short) + msgLenght;
+		packetLenght = sizeof(int) + sizeof(int) + sizeof(char) + sizeof(short) + sizeof(short) + msgLenght;
 
 		// Writing
 		connBuff->WriteInt32LE(packetLenght);
@@ -228,7 +228,7 @@ string ConnectionMaintainer::getMessages() {
 		string retStr;
 
 		this->playerPackageID = -1;
-		int id = -1;
+		int msgid = -1;
 
 		if (controlStr != "") retStr = controlStr;
 
@@ -244,16 +244,17 @@ string ConnectionMaintainer::getMessages() {
 				if((this->playerPackageID < 0) || (this->playerID > 3))
 					this->playerPackageID = buff.ReadInt16LE(); //player id of packet
 				std::cout << "Player id: " << playerPackageID << std::endl;
-				if ((id < 0) || (id > 126))
-					id = buff.ReadInt16LE();
-				std::cout << "Packet id: " << id << std::endl;
+				if ((msgid < 0) || (msgid > 126))
+					msgid = buff.ReadInt16LE();
+
+				std::cout << "Packet id: " << msgid << std::endl;
 				// get current id of this msg
 				if (got_current_msg_id == false) {
 					got_current_msg_id = true;
-					/*if (id != this->last_sent_msg_id) {
-						std::cout << "id out of order... update with CSP" << std::endl;
+					if (msgid != this->last_sent_msg_id) {
+						std::cout << "id out of order... update with CSP received id:" << msgid << std::endl;
 						return "CSP";
-					}*/
+					}
 				}
 
 				// Read

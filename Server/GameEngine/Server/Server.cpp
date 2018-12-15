@@ -381,11 +381,11 @@ void sendMsg(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string use
 	sa->WsaBuffer.len = packetLength;
 	sa->GotNewData = 1;
 }
-void sendMsgValue(LPSOCKET_INFORMATION sa, int sendID, int id, std::string msg, std::string userName)
+void sendMsgValue(LPSOCKET_INFORMATION sa, int sendID, int msgid, std::string msg, std::string userName)
 {
 	std::string formatedMsg = msg;
 
-	int packetLength = sizeof(INT32) + sizeof(int) + sizeof(short) + sizeof(short) + formatedMsg.size();
+	int packetLength = sizeof(INT32) + sizeof(int) + sizeof(int) + sizeof(short) + formatedMsg.size();
 
 	Buffer buff(packetLength);
 	buff.WriteInt32LE(packetLength);
@@ -394,7 +394,7 @@ void sendMsgValue(LPSOCKET_INFORMATION sa, int sendID, int id, std::string msg, 
 
 	printf("To Client #: %d from %d\n", sa->id, sendID);
 
-	buff.WriteInt16LE(id);
+	buff.WriteInt16LE(msgid);
 
 	for (int index2 = 0; index2 < formatedMsg.size(); index2++)
 	{
@@ -528,11 +528,15 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 		case 4:
 		{
 			short id = buff.ReadInt16LE();
-			bool forceCSP = false;
+
+			short msgid = buff.ReadInt16LE();
+
+			bool forceCSP = true;
 			// force CSP
 			if (forceCSP) {
-				id++;
+				msgid = 1000;
 			}
+			std::cout << "msg id: " << msgid << std::endl;
 			short msgLenght = buff.ReadInt16LE();
 			std::string msg;
 			for (short index3 = 0; index3 < msgLenght; index3++)
@@ -555,12 +559,12 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 						if (sa->rooms.at(indA) == SocketArray[indB]->rooms.at(indC) && sa->rooms.at(indA) != "")
 						{
 							sa->obj->position.z += 0.1f;
-							//zPos += 0.1f;
+							zPos += 0.1f;
 							// id+ zpos
 							//std::string sendthis = buildstring + ":" + std::to_string(zPos);
 							// zpos
 							std::string sendthis = std::to_string(sa->obj->position.z);
-							sendMsgValue(SocketArray[indB], sa->id, id, sendthis, sa->UserName);
+							sendMsgValue(SocketArray[indB], sa->id, msgid, sendthis, sa->UserName);
 							printf("Sending %s to Client %s\n", sendthis, SocketArray[indB]->UserName);
 						}
 					}
@@ -568,33 +572,6 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 			}
 		}break;
 
-		// Y rotation input
-		case 5:
-		{
-			short id = buff.ReadInt16LE();
-			short msgLenght = buff.ReadInt16LE();
-			std::string msg;
-			for (short index3 = 0; index3 < msgLenght; index3++)
-			{
-				msg.push_back(buff.ReadChar());
-			}
-
-			for (int indA = 0; indA < sa->rooms.size(); indA++)
-			{
-				for (int indB = 0; indB < TotalSockets; indB++)
-				{
-					for (int indC = 0; indC < SocketArray[indB]->rooms.size(); indC++)
-					{
-						if (sa->rooms.at(indA) == SocketArray[indB]->rooms.at(indC) && sa->rooms.at(indA) != "")
-						{
-							yRotation += 0.1f;
-							std::string sendthis = std::to_string(zPos);
-							sendMsgValue(SocketArray[indB], sa->id, id, sendthis, sa->UserName);
-						}
-					}
-				}
-			}
-		}break;
 
 		default:
 			break;
