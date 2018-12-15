@@ -381,7 +381,7 @@ void sendMsg(LPSOCKET_INFORMATION sa, short id, std::string msg, std::string use
 	sa->WsaBuffer.len = packetLength;
 	sa->GotNewData = 1;
 }
-void sendMsgValue(LPSOCKET_INFORMATION sa, int id, std::string msg, std::string userName)
+void sendMsgValue(LPSOCKET_INFORMATION sa, int sendID, int id, std::string msg, std::string userName)
 {
 	std::string formatedMsg = msg;
 
@@ -390,9 +390,9 @@ void sendMsgValue(LPSOCKET_INFORMATION sa, int id, std::string msg, std::string 
 	Buffer buff(packetLength);
 	buff.WriteInt32LE(packetLength);
 
-	buff.WriteInt16LE(sa->id); //the id of the client sending the message
+	buff.WriteInt16LE(sendID); //the id of the client sending the message
 
-	printf("Client #: %d\n", sa->id);
+	printf("To Client #: %d from %d\n", sa->id, sendID);
 
 	buff.WriteInt16LE(id);
 
@@ -560,8 +560,8 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 							//std::string sendthis = buildstring + ":" + std::to_string(zPos);
 							// zpos
 							std::string sendthis = std::to_string(sa->obj->position.z);
-							sendMsgValue(SocketArray[indB], id, sendthis, sa->UserName);
-							printf("Sending %s to Client %d\n", sendthis, indB);
+							sendMsgValue(SocketArray[indB], sa->id, id, sendthis, sa->UserName);
+							printf("Sending %s to Client %s\n", sendthis, SocketArray[indB]->UserName);
 						}
 					}
 				}
@@ -589,7 +589,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 						{
 							yRotation += 0.1f;
 							std::string sendthis = std::to_string(zPos);
-							sendMsgValue(SocketArray[indB], id, sendthis, sa->UserName);
+							sendMsgValue(SocketArray[indB], sa->id, id, sendthis, sa->UserName);
 						}
 					}
 				}

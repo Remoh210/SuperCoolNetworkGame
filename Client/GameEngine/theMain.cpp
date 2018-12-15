@@ -894,6 +894,8 @@ void sendInput() {
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Conn.giveMsgID(), Send_Message);
 		
 		int currentID = Conn.playerPackageID;
+		if (currentID > 3 || currentID < 0)
+			currentID = 0; //if it's somehow completely screwed, just default to 0 because this is getting infuriating
 		std::cout << "current id " << Conn.playerPackageID << std::endl;
 		cMeshObject* player = players[currentID].obj;//findObjectByFriendlyName("car");
 		int currentcameraid = currentID;
