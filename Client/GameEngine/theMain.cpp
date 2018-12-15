@@ -381,34 +381,7 @@ int main(void)
 	//::p_LuaScripts->SetObjectVector(&(::vec_pObjectsToDraw));
 
 	//::p_LuaScripts->LoadScriptFile("example.lua");
-	camera.b_controlledByScript = true;
-	//COMMANDS
-	cFollowObjectCommand* newCommand = new cFollowObjectCommand();
-
-	cMeshObject* p_camObj = new cMeshObject();
-	p_camObj->friendlyName = "cameraObj";
-	p_camObj->position = camera.Position;
-
-	std::vector<sNVPair> vecInitValues;
-
-	sNVPair ObjectToMove;				ObjectToMove.pMeshObj = p_camObj;
-	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
-	sNVPair minDistance;				minDistance.fValue = 4;
-	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 20;
-	sNVPair maxSpeed;					maxSpeed.fValue = 30;
-	sNVPair TargetObject;				TargetObject.pMeshObj = findObjectByFriendlyName("car");
-	sNVPair Time;						Time.fValue = 0;
-
-	vecInitValues.push_back(ObjectToMove);
-	vecInitValues.push_back(IdealRelPos);
-	vecInitValues.push_back(minDistance);
-	vecInitValues.push_back(maxSpeedDistance);
-	vecInitValues.push_back(maxSpeed);
-	vecInitValues.push_back(TargetObject);
-	vecInitValues.push_back(Time);
-
-	newCommand->Initialize(vecInitValues);
-	sceneCommandGroup.vecCommands.push_back(newCommand);
+	
 
 
 
@@ -529,6 +502,37 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 			}
 		}
 	}
+
+
+
+	camera.b_controlledByScript = true;
+	//COMMANDS
+	cFollowObjectCommand* newCommand = new cFollowObjectCommand();
+
+	cMeshObject* p_camObj = new cMeshObject();
+	p_camObj->friendlyName = "cameraObj";
+	p_camObj->position = camera.Position;
+
+	std::vector<sNVPair> vecInitValues;
+
+	sNVPair ObjectToMove;				ObjectToMove.pMeshObj = p_camObj;
+	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
+	sNVPair minDistance;				minDistance.fValue = 4;
+	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 20;
+	sNVPair maxSpeed;					maxSpeed.fValue = 30;
+	sNVPair TargetObject;				TargetObject.pMeshObj = players[playerID].obj;
+	sNVPair Time;						Time.fValue = 0;
+
+	vecInitValues.push_back(ObjectToMove);
+	vecInitValues.push_back(IdealRelPos);
+	vecInitValues.push_back(minDistance);
+	vecInitValues.push_back(maxSpeedDistance);
+	vecInitValues.push_back(maxSpeed);
+	vecInitValues.push_back(TargetObject);
+	vecInitValues.push_back(Time);
+
+	newCommand->Initialize(vecInitValues);
+	sceneCommandGroup.vecCommands.push_back(newCommand);
 
 	
 	// Draw the "scene" (run the program)
