@@ -29,6 +29,8 @@ bool bMouseInWindow = false;
 bool IsPicked = false;
 void commandsInterface();
 
+extern bool forceCSP;
+
 cMeshObject* CloseToObj(std::vector<cMeshObject*> models);
 
 cMeshObject* cloesetObj;
@@ -148,14 +150,23 @@ void key_callback( GLFWwindow* window,
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
 	{
 
-		camera.b_controlledByScript = false;
+		//camera.b_controlledByScript = false;
+		if (forceCSP) {
+			forceCSP = false;
 
+			std::cout << "turn forcing CSP off";
+		}
+		else {
+			forceCSP = true;
+
+			std::cout << "forcing CSP";
+		}
 	}
 
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
 	{
 
-		camera.b_controlledByScript = true;
+		//camera.b_controlledByScript = true;
 		
 	}
 	

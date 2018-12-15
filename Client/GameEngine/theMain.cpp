@@ -63,6 +63,7 @@ void UpdateWindowTitle(void);
 double currentTime = 0;
 double deltaTime = 0;
 
+bool forceCSP = false;
 void sendInput();
 
 void DoPhysicsUpdate( double deltaTime, 
@@ -990,20 +991,28 @@ void sendInput() {
 		sceneCommandGroup.vecCommands.push_back(newCommand);
 		// cam try end
 		// Checking messege from the server
-		std::cout << "print msg:" << std::endl;
-		std::cout << "player z pos: " << player->position.z << std::endl;
-		if (Recieve_Message == "CSP") {
-			std::cout << " do CSP";
+		//std::cout << "print msg:" << std::endl;
+		//std::cout << "player z pos: " << player->position.z << std::endl;
+		if (Recieve_Message == "CSP" || forceCSP) {
+			std::cout << " do CSP" << std::endl;
 			double temp = player->position.z;
 			if (runthisOnce == true) {
 				player->position.z = -73.5999 + 0.1f;
+
 			}
 			else {
 
 				player->position.z = temp+ lastUpdate;
+				cMeshObject* drawCSP = findObjectByFriendlyName("carCSP");
+				drawCSP->position.z = player->position.z + lastUpdate;
+				drawCSP->position.x = player->position.x;
+				glm::mat4x4 matModel = glm::mat4(1.0f);			// mat4x4 m, p, mvp;
+
+				DrawObject(drawCSP, matModel, program);
 			}
 			runthisOnce = false;
-			std::cout << "player z pos 2: " << player->position.z << std::endl;
+
+			//std::cout << "player z pos 2: " << player->position.z << std::endl;
 			
 		}else if (Recieve_Message != "") {
 
@@ -1017,7 +1026,9 @@ void sendInput() {
 				player->position.z = temp;
 				player->step = player->position - player->prevPosition;
 
-				lastUpdate = temp - player->position.z;
+
+				//lastUpdate = abs(temp) - abs(player->position.z);
+
 
 			//std::string s = ChatBuffer;
 			//char delimiter = ':';
@@ -1051,9 +1062,7 @@ void sendInput() {
 		}
 		
 		std::cout << "last update: " << lastUpdate << std::endl;
-		if (lastUpdate < 0.1f) {
 			lastUpdate = 0.1f;
-		}
 
 	}
 }

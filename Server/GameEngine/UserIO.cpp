@@ -13,7 +13,7 @@ extern sLight* pTheOneLight;	//  = NULL;
 extern cLightManager* LightManager;
 int lightIndex = 0;
 bool firstMouse = true;
-
+extern bool forceCSP;
 void switchVis(cMeshObject* obj) {obj->bIsVisible = !obj->bIsVisible;}
 
 float lastX = SCR_WIDTH / 2.0f;
@@ -85,12 +85,7 @@ void key_callback( GLFWwindow* window,
 	if (glfwGetKey(window, GLFW_KEY_ENTER))
 	{
 		
-
-
 	}
-
-
-
 
 
 	if (glfwGetKey(window, GLFW_KEY_L))
@@ -161,6 +156,11 @@ void key_callback( GLFWwindow* window,
 	}
 	
 	//TURN ON The Light
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+	{
+
+
+	}
 
 	if (key == GLFW_KEY_9 && action == GLFW_PRESS)
 	{
