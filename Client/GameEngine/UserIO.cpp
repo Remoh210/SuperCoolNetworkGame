@@ -13,7 +13,7 @@ extern sLight* pTheOneLight;	//  = NULL;
 extern cLightManager* LightManager;
 int lightIndex = 0;
 bool firstMouse = true;
-
+extern bool useServerReconciliation;
 void switchVis(cMeshObject* obj) {obj->bIsVisible = !obj->bIsVisible;}
 
 float lastX = SCR_WIDTH / 2.0f;
@@ -166,7 +166,16 @@ void key_callback( GLFWwindow* window,
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
 	{
 
-		//camera.b_controlledByScript = true;
+		if (useServerReconciliation) {
+			useServerReconciliation = false;
+
+			std::cout << "turn ServerReconciliation off" << std::endl;
+		}
+		else {
+			useServerReconciliation = true;
+
+			std::cout << "forcing useServerReconciliation" << std::endl;
+		}
 		
 	}
 	

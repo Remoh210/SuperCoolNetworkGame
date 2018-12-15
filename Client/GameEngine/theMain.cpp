@@ -56,7 +56,7 @@ cCommandGroup sceneCommandGroup("SceneCG");
 
 
 
-
+bool useServerReconciliation = false;
 
 std::vector<cAABB::sAABB_Triangle> vec_cur_AABB_tris;
 void UpdateWindowTitle(void);
@@ -484,7 +484,7 @@ $$$$$$$$$$$$$$$$$$$$$$$  ;;;;                                       :::::::::::"
 		//string RoomName = "main";
 		//User.Room = (char*)RoomName.c_str();
 		ConnRooms.push_back(User.Room);
-		Recieve_Message = Conn.getMessages();
+		Recieve_Message = Conn.getMessages(useServerReconciliation);
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_JOIN_ROOM, 0, Send_Message);
 		cMeshObject* player = players[playerID].obj;//findObjectByFriendlyName("car");
 		player->position.z = -73.5999;
@@ -946,7 +946,7 @@ void sendInput() {
 	//Buffer* Recieve_Buffer = new Buffer(BUFFER_LENGTH);
 	if (Conn.isAlive)
 	{
-		Recieve_Message = Conn.getMessages();
+		Recieve_Message = Conn.getMessages(useServerReconciliation);
 		//char* RoomName;
 		//RoomName = new char[ARRAY_SIZE];
 		//playerID = Conn.playerPackageID;		

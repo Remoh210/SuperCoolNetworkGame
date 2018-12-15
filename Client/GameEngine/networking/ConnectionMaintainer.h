@@ -63,7 +63,7 @@ public:
 	void sendMessage(Buffer* connBuff, UserInfo info, char msgID, short messageNum,
 		string message);
 	// New Messeges
-	string getMessages();
+	string getMessages(bool useServerReconciliation);
 
 	int giveMsgID();
 };

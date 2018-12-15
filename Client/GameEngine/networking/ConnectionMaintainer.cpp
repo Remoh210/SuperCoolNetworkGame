@@ -194,7 +194,7 @@ void ConnectionMaintainer::sendMessage(Buffer* connBuff, UserInfo info, char msg
 	}
 }
 
-string ConnectionMaintainer::getMessages() {
+string ConnectionMaintainer::getMessages(bool useServerReconciliation) {
 	// Setting time interval
 
 	bool got_current_msg_id = false;
@@ -249,11 +249,14 @@ string ConnectionMaintainer::getMessages() {
 
 				std::cout << "Packet id: " << msgid << std::endl;
 				// get current id of this msg
-				if (got_current_msg_id == false) {
+				if (got_current_msg_id == false ) {
 					got_current_msg_id = true;
-					if (msgid != this->last_sent_msg_id) {
+					if (msgid != this->last_sent_msg_id && useServerReconciliation) {
 						std::cout << "id out of order... update with CSP received id:" << msgid << std::endl;
 						return "CSP";
+					}
+					else {
+						std::cout << "not using CSP" << std::endl;
 					}
 				}
 
