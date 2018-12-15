@@ -454,7 +454,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 					//{
 						//if (roomName == SocketArray[indB]->rooms.at(indC) && SocketArray[indB]->rooms.at(indC) != "")
 						//{
-							sendMsg(SocketArray[indA], sa->messageID, "JoinAs" + std::to_string(sa->id), "Server");
+							sendMsg(sa, sa->messageID, "JoinAs" + std::to_string(sa->id), "Server");
 							//sendMsg(SocketArray[indB], sa->messageID, "JoinAs" + std::to_string(sa->id), "Server");
 							//sendMsg(SocketArray[indB], 0, userName + " has connected to " + roomName, "Server");
 						//}
@@ -561,6 +561,7 @@ void TreatMessage(LPSOCKET_INFORMATION sa, std::string msg)
 							// zpos
 							std::string sendthis = std::to_string(sa->obj->position.z);
 							sendMsgValue(SocketArray[indB], id, sendthis, sa->UserName);
+							printf("Sending %s to Client %d\n", sendthis, indB);
 						}
 					}
 				}

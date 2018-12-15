@@ -227,14 +227,10 @@ string ConnectionMaintainer::getMessages() {
 		static string controlStr;
 		string retStr;
 
-		if (controlStr != "") retStr = controlStr;
+		this->playerPackageID = -1;
+		int id = -1;
 
-		// data for the prefix length
-		packetLength = buff.ReadInt32LE();
-		this->playerPackageID = buff.ReadInt16LE(); //player id of packet
-		std::cout << "Player id: " << playerPackageID << std::endl;
-		int id = buff.ReadInt16LE();
-		std::cout << "Packet id: " << id << std::endl;
+		if (controlStr != "") retStr = controlStr;
 
 		while (bytesInBuffer != 0) {
 			if (bytesInBuffer < 4 && !packetLength) {
@@ -243,7 +239,14 @@ string ConnectionMaintainer::getMessages() {
 				bytesInBuffer--;
 			}
 			else {
-
+				// data for the prefix length
+				packetLength = buff.ReadInt32LE();
+				if((this->playerPackageID < 0) || (this->playerID > 3))
+					this->playerPackageID = buff.ReadInt16LE(); //player id of packet
+				std::cout << "Player id: " << playerPackageID << std::endl;
+				if ((id < 0) || (id > 126))
+					id = buff.ReadInt16LE();
+				std::cout << "Packet id: " << id << std::endl;
 				// get current id of this msg
 				if (got_current_msg_id == false) {
 					got_current_msg_id = true;
