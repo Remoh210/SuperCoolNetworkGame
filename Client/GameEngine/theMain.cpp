@@ -896,7 +896,36 @@ void sendInput() {
 		int currentID = Conn.playerPackageID;
 		std::cout << "current id " << Conn.playerPackageID << std::endl;
 		cMeshObject* player = players[currentID].obj;//findObjectByFriendlyName("car");
+		int currentcameraid = currentID;
 
+
+		// cam try
+
+
+		cMeshObject* p_camObj = new cMeshObject();
+		p_camObj->friendlyName = "cameraObj";
+		p_camObj->position = camera.Position;
+		std::vector<sNVPair> vecInitValues;
+
+		sNVPair ObjectToMove;				ObjectToMove.pMeshObj = p_camObj;
+		sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
+		sNVPair minDistance;				minDistance.fValue = 4;
+		sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 20;
+		sNVPair maxSpeed;					maxSpeed.fValue = 30;
+		sNVPair TargetObject;				TargetObject.pMeshObj = players[currentcameraid].obj;
+		sNVPair Time;						Time.fValue = 0;
+
+		vecInitValues.push_back(ObjectToMove);
+		vecInitValues.push_back(IdealRelPos);
+		vecInitValues.push_back(minDistance);
+		vecInitValues.push_back(maxSpeedDistance);
+		vecInitValues.push_back(maxSpeed);
+		vecInitValues.push_back(TargetObject);
+		vecInitValues.push_back(Time);
+		cFollowObjectCommand* newCommand = new cFollowObjectCommand();
+		newCommand->Initialize(vecInitValues);
+		sceneCommandGroup.vecCommands.push_back(newCommand);
+		// cam try end
 		// Checking messege from the server
 		std::cout << "print msg:" << std::endl;
 		
