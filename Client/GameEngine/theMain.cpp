@@ -883,16 +883,16 @@ void sendInput() {
 		Recieve_Message = Conn.getMessages();
 		//char* RoomName;
 		//RoomName = new char[ARRAY_SIZE];
-		//playerID = Conn.playerPackageID;
-		int currentID = Conn.playerPackageID;
-		std::cout << "current id " << Conn.playerPackageID << std::endl;
-		cMeshObject* player = players[currentID].obj;//findObjectByFriendlyName("car");
-		
+		//playerID = Conn.playerPackageID;		
 		//Send_Message = std::to_string(msg_ids);
 		Send_Message = "w";
 		
 		Conn.sendMessage(Send_Buffer, User, MSG_ID_INPUT, Conn.giveMsgID(), Send_Message);
 		
+		int currentID = Conn.playerPackageID;
+		std::cout << "current id " << Conn.playerPackageID << std::endl;
+		cMeshObject* player = players[currentID].obj;//findObjectByFriendlyName("car");
+
 		// Checking messege from the server
 		std::cout << "print msg:" << std::endl;
 		
@@ -904,8 +904,8 @@ void sendInput() {
 			ChatBuffer += Recieve_Message;
 				cout << ChatBuffer;
 				cout << '\n';
-			/*	double temp = ::atof(ChatBuffer.c_str());
-				player->position.z = temp;*/
+				double temp = ::atof(ChatBuffer.c_str());
+				player->position.z = temp;
 			//std::string s = ChatBuffer;
 			//char delimiter = ':';
 
